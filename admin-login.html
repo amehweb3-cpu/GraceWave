@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- PWA -->
+<link rel="manifest" href="/manifest.json"/>
+<meta name="theme-color" content="#9a6e1e"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="GraceWave"/>
+<link rel="apple-touch-icon" href="/icons/icon-180.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16.png"/>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R0ZQ4B6TVP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R0ZQ4B6TVP');
+</script>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GraceWave</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f; --surface: #111118; --surface2: #18181f; --surface3: #1e1e28;
+      --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
+      --gold: #c9a84c; --gold-light: #e8c96e; --gold-dim: rgba(201,168,76,0.12);
+      --gold-border: rgba(201,168,76,0.3); --text: #f0ede6; --text-muted: #8a8699;
+      --text-soft: #c5c0d4; --accent: #7c5cbf; --red: #e53e3e; --green: #48bb78;
+      --radius: 12px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* LOGIN */
+    #login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .login-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 30% 30%, rgba(124,92,191,0.2) 0%, transparent 60%), radial-gradient(ellipse 50% 50% at 75% 70%, rgba(201,168,76,0.1) 0%, transparent 55%); }
+    .login-card { background: var(--surface); border: 1px solid var(--border2); border-radius: 20px; padding: 56px 50px; width: 100%; max-width: 420px; position: relative; z-index: 2; box-shadow: 0 40px 100px rgba(0,0,0,0.6); animation: fadeUp 0.6s ease both; }
+    .login-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 36px; justify-content: center; }
+    .logo-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--gold), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .logo-text { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; }
+    .logo-text span { color: var(--gold); }
+    .login-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; text-align: center; margin-bottom: 6px; }
+    .login-sub { text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 36px; }
+    .field { margin-bottom: 18px; }
+    .field label { display: block; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+    .field input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 13px 16px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.95rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    .field input:focus { border-color: var(--gold-border); box-shadow: 0 0 0 3px rgba(201,168,76,0.08); }
+    .login-btn { width: 100%; background: var(--gold); color: #0a0a0f; border: none; border-radius: 8px; padding: 14px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; margin-top: 8px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .login-btn:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(201,168,76,0.25); }
+    .login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .login-error { background: rgba(229,62,62,0.1); border: 1px solid rgba(229,62,62,0.3); color: #fc8181; border-radius: 8px; padding: 10px 14px; font-size: 0.83rem; text-align: center; margin-top: 14px; display: none; }
+    .login-hint { text-align: center; margin-top: 24px; font-size: 0.75rem; color: var(--text-muted); }
+
+    /* SPINNER */
+    .spinner { width: 18px; height: 18px; border: 2px solid rgba(10,10,15,0.3); border-top-color: #0a0a0f; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* DASHBOARD */
+    #dashboard { display: none; }
+    .admin-layout { display: flex; min-height: 100vh; }
+    .sidebar { width: 260px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 50; overflow-y: auto; }
+    .sidebar-top { padding: 28px 24px 20px; border-bottom: 1px solid var(--border); }
+    .sidebar-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .sidebar-badge { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); background: var(--gold-dim); border: 1px solid var(--gold-border); padding: 3px 9px; border-radius: 100px; }
+    .sidebar-nav { padding: 20px 14px; flex: 1; }
+    .nav-section-label { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); padding: 0 10px; margin: 20px 0 8px; }
+    .nav-section-label:first-child { margin-top: 0; }
+    .sidebar-link { display: flex; align-items: center; gap: 11px; padding: 10px 12px; border-radius: 8px; color: var(--text-soft); font-size: 0.88rem; font-weight: 500; cursor: pointer; transition: all 0.18s; border: none; background: transparent; width: 100%; text-align: left; }
+    .sidebar-link:hover { background: var(--surface2); color: var(--text); }
+    .sidebar-link.active { background: var(--gold-dim); color: var(--gold); border: 1px solid var(--gold-border); }
+    .sidebar-link .nav-icon { font-size: 1rem; width: 20px; text-align: center; }
+    .sidebar-link .count-badge { margin-left: auto; background: var(--surface2); color: var(--text-muted); font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 100px; }
+    .sidebar-link.active .count-badge { background: rgba(201,168,76,0.15); color: var(--gold); }
+    .sidebar-bottom { padding: 14px; border-top: 1px solid var(--border); }
+    .logout-btn { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; color: #fc8181; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.18s; border: none; background: transparent; width: 100%; }
+    .logout-btn:hover { background: rgba(229,62,62,0.08); }
+
+    /* MAIN */
+    .main-content { flex: 1; margin-left: 260px; min-height: 100vh; display: flex; flex-direction: column; }
+    .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 18px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 40; }
+    .topbar-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .admin-pill { background: var(--gold-dim); border: 1px solid var(--gold-border); color: var(--gold); font-size: 0.75rem; font-weight: 700; padding: 5px 14px; border-radius: 100px; letter-spacing: 0.05em; }
+    .admin-email { font-size: 0.78rem; color: var(--text-muted); }
+    .page-content { padding: 40px; flex: 1; }
+
+    /* PANELS */
+    .panel { display: none; }
+    .panel.active { display: block; animation: fadeUp 0.4s ease both; }
+
+    /* STATS */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 36px; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; transition: border-color 0.2s; }
+    .stat-card:hover { border-color: var(--gold-border); }
+    .stat-card-icon { font-size: 1.6rem; margin-bottom: 14px; }
+    .stat-card-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--gold); }
+    .stat-card-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+
+    /* TABLE */
+    .section-heading { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; }
+    .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 36px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 600px; }
+    th { text-align: left; padding: 13px 18px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); background: var(--surface2); border-bottom: 1px solid var(--border); }
+    td { padding: 14px 18px; font-size: 0.86rem; border-bottom: 1px solid var(--border); color: var(--text-soft); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.015); }
+    .td-title { color: var(--text); font-weight: 500; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .type-pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 100px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; white-space: nowrap; }
+    .pill-audio { background: rgba(201,168,76,0.12); color: var(--gold); }
+    .pill-video { background: rgba(124,92,191,0.15); color: #b794f4; }
+    .pill-ebook { background: rgba(72,187,120,0.12); color: #68d391; }
+    .pill-notes { background: rgba(237,137,54,0.12); color: #f6ad55; }
+    .action-btns { display: flex; gap: 8px; }
+    .tbl-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text-muted); padding: 5px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+    .tbl-btn:hover { border-color: var(--gold-border); color: var(--gold); }
+    .tbl-btn.del:hover { border-color: rgba(229,62,62,0.4); color: #fc8181; }
+
+    /* UPLOAD FORM */
+    .upload-form-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 36px; max-width: 760px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+    .form-field { display: flex; flex-direction: column; gap: 7px; }
+    .form-field.full { grid-column: 1 / -1; }
+    .form-field label { font-size: 0.77rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
+    .form-field input, .form-field select, .form-field textarea { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; width: 100%; }
+    .form-field select { cursor: pointer; }
+    .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--gold-border); box-shadow: 0 0 0 3px rgba(201,168,76,0.07); }
+    .form-field textarea { resize: vertical; min-height: 90px; }
+    .dropzone { border: 2px dashed var(--border2); border-radius: 10px; padding: 44px 24px; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
+    .dropzone:hover, .dropzone.drag-over { border-color: var(--gold-border); background: var(--gold-dim); }
+    .dropzone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .dz-icon { font-size: 2.4rem; margin-bottom: 12px; }
+    .dz-text { font-size: 0.9rem; color: var(--text-soft); margin-bottom: 6px; }
+    .dz-sub { font-size: 0.78rem; color: var(--text-muted); }
+    .dz-sub span { color: var(--gold); font-weight: 600; }
+    .dz-filename { margin-top: 12px; font-size: 0.82rem; color: var(--green); font-weight: 600; display: none; }
+    .progress-wrap { margin-top: 20px; display: none; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px; }
+    .progress-bar-bg { background: var(--surface2); border-radius: 100px; height: 6px; overflow: hidden; }
+    .progress-bar { height: 100%; background: linear-gradient(90deg, var(--gold), var(--accent)); border-radius: 100px; width: 0%; transition: width 0.15s; }
+    .form-actions { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+    .btn-primary { background: var(--gold); color: #0a0a0f; border: none; padding: 13px 30px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 7px; }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,168,76,0.25); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-secondary { background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 13px 24px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; }
+    .btn-secondary:hover { border-color: var(--border2); color: var(--text); }
+
+    /* TABS */
+    .type-tabs { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
+    .type-tab { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 20px; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all 0.18s; display: flex; align-items: center; gap: 7px; font-family: 'DM Sans', sans-serif; }
+    .type-tab:hover { border-color: var(--border2); color: var(--text); }
+    .type-tab.active { background: var(--gold-dim); border-color: var(--gold-border); color: var(--gold); font-weight: 700; }
+
+    /* TOAST */
+    .toast { position: fixed; bottom: 32px; right: 32px; background: var(--surface); border: 1px solid rgba(72,187,120,0.4); border-radius: 10px; padding: 16px 22px; display: flex; align-items: center; gap: 12px; font-size: 0.88rem; font-weight: 500; box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: translateY(80px); opacity: 0; transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1); z-index: 999; max-width: 340px; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast-icon { width: 32px; height: 32px; background: rgba(72,187,120,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+
+    /* FILE SIZE WARNING */
+    .file-warning { background: rgba(237,137,54,0.1); border: 1px solid rgba(237,137,54,0.3); color: #f6ad55; border-radius: 8px; padding: 10px 14px; font-size: 0.82rem; margin-top: 10px; display: none; }
+
+    /* COVER IMAGE PREVIEW */
+    .cover-upload-row { display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: start; }
+    .cover-preview { width: 120px; height: 120px; border-radius: 10px; background: var(--surface2); border: 2px dashed var(--border2); display: flex; align-items: center; justify-content: center; font-size: 2rem; overflow: hidden; flex-shrink: 0; }
+    .cover-preview img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+    .cover-dropzone { border: 2px dashed var(--border2); border-radius: 10px; padding: 22px 18px; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
+    .cover-dropzone:hover { border-color: var(--gold-border); background: var(--gold-dim); }
+    .cover-dropzone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .cover-hint { font-size: 0.75rem; color: var(--text-muted); margin-top: 6px; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 900px) {
+      .sidebar { width: 220px; } .main-content { margin-left: 220px; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .page-content { padding: 24px; }
+      .topbar { padding: 16px 20px; }
+    }
+    @media (max-width: 640px) {
+      .sidebar { display: none; } .main-content { margin-left: 0; }
+    }
+  
+    /* ── HAMBURGER MENU ── */
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; background:none; border:none; z-index:200; }
+    .hamburger span { display:block; width:24px; height:2px; background:var(--text); border-radius:2px; transition:all 0.3s ease; }
+    .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity:0; }
+    .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+
+    /* Mobile nav drawer */
+    .mobile-nav { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(10,10,15,0.98); backdrop-filter:blur(20px); z-index:150; flex-direction:column; align-items:center; justify-content:center; gap:10px; }
+    .mobile-nav.open { display:flex; }
+    .mobile-nav a { color:var(--text); text-decoration:none; font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:700; padding:14px 0; transition:color 0.2s; }
+    .mobile-nav a:hover { color:var(--gold); }
+    .mobile-nav-close { position:absolute; top:24px; right:24px; background:none; border:none; color:var(--text); font-size:1.6rem; cursor:pointer; }
+
+    /* ── GLOBAL MOBILE FIXES ── */
+    @media (max-width: 768px) {
+      /* Nav */
+      
+      .nav-links { display:none !important; }
+
+      /* Hero */
+      .hero { padding:60px 20px 60px; min-height:auto; }
+      h1.hero-title { font-size:clamp(2.2rem,9vw,3.2rem); }
+      .hero-sub { font-size:0.95rem; }
+      .hero-actions { flex-direction:column; align-items:center; gap:12px; }
+      .hero-actions a, .hero-actions button { width:100%; max-width:320px; justify-content:center; }
+      .hero-stats { gap:24px; margin-top:48px; }
+      .divider { display:none; }
+      .stat-num { font-size:1.5rem; }
+
+      /* Sections */
+      section { padding:60px 20px; }
+      .section-header { flex-direction:column; align-items:flex-start; gap:12px; }
+      h2.section-title { font-size:clamp(1.6rem,6vw,2.2rem); max-width:100%; }
+
+      /* Types grid */
+      .types-grid { grid-template-columns:repeat(2,1fr); gap:12px; }
+      .type-card { padding:24px 16px; }
+      .type-icon { width:48px; height:48px; font-size:20px; }
+
+      /* Search */
+      .search-section { padding:50px 20px; }
+      .search-box-wrap { flex-wrap:nowrap; }
+
+      /* Sermons grid */
+      .sermons-grid { grid-template-columns:1fr; gap:16px; }
+
+      /* Books */
+      .books-row { grid-template-columns:repeat(2,1fr); gap:14px; }
+
+      /* Ministers preview */
+      #ministers-preview { grid-template-columns:repeat(2,1fr) !important; gap:14px; }
+      .ministers-grid { grid-template-columns:repeat(2,1fr); gap:14px; }
+
+      /* Newsletter */
+      .newsletter { padding:44px 20px; margin:0 16px 60px; border-radius:14px; }
+      .newsletter h2 { font-size:1.6rem; }
+      .email-row { flex-direction:column; gap:10px; }
+      .email-input { min-width:unset; width:100%; }
+
+      /* Footer */
+      footer { padding:50px 20px 30px; }
+      .footer-top { grid-template-columns:1fr; gap:28px; }
+      .footer-bottom { flex-direction:column; align-items:flex-start; gap:16px; }
+
+      /* Page heroes (inner pages) */
+      .page-hero { padding:110px 20px 60px; }
+      .page-hero h1 { font-size:clamp(2rem,8vw,3rem); }
+
+      /* Doc layout (privacy/terms) */
+      .doc-layout { grid-template-columns:1fr; padding:30px 20px 60px; gap:30px; }
+      .toc { display:none; }
+
+      /* Contact / About */
+      .contact-grid, .about-grid, .values-grid { grid-template-columns:1fr !important; }
+      .contact-info { padding:30px 20px !important; }
+
+      /* Minister cards grid */
+      .minister-card { padding:24px 14px; }
+      .minister-photo { width:80px; height:80px; }
+    }
+
+    @media (max-width: 480px) {
+      h1.hero-title { font-size:2rem; }
+      .books-row { grid-template-columns:repeat(2,1fr); }
+      .types-grid { grid-template-columns:repeat(2,1fr); }
+      .ministers-grid { grid-template-columns:1fr; }
+      #ministers-preview { grid-template-columns:1fr !important; }
+      .sermon-title-featured { font-size:1.1rem; }
+      nav { padding:14px 16px; }
+      .nav-logo svg { width:130px; height:30px; }
+    }
+
+    @media screen and (max-width: 768px) {
+      
+    }
+
+  
+    @media (max-width: 768px) {
+      nav { display: none !important; }
+    }
+  
+    /* ── MOBILE NAV — app style ── */
+    @media (max-width: 768px) {
+      /* Top bar: hamburger left, logo center */
+      nav {
+        padding: 12px 16px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        position: fixed !important;
+        top: 0 !important; left: 0 !important; right: 0 !important;
+        z-index: 200 !important;
+        background: rgba(10,10,15,0.97) !important;
+        backdrop-filter: blur(20px) !important;
+        border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+        height: 60px !important;
+      }
+      /* Show hamburger */
+      .hamburger { display:flex !important; order: 0; }
+      /* Logo centered */
+      .nav-logo { position: absolute; left: 50%; transform: translateX(-50%); }
+      /* Hide desktop links */
+      .nav-links { display: none !important; }
+      /* Push content below fixed nav */
+      body { padding-top: 60px !important; }
+      .hero { padding-top: 50px !important; }
+      .page-hero { padding-top: 80px !important; }
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-bg"></div>
+  <div class="login-card">
+    <div class="login-logo" style="justify-content:center;margin-bottom:28px;"><svg width="158" height="36" viewBox="0 0 190 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="190" height="44" rx="9" fill="#f8f4ec"/>
+  <rect x="15" y="4" width="4" height="26" rx="2" fill="#9a6e1e"/>
+  <rect x="7" y="12" width="22" height="4" rx="2" fill="#9a6e1e"/>
+  <path d="M5 36 Q12 29 19 36 Q26 43 33 36" stroke="#9a6e1e" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+  <path d="M1 36 Q13 25 25 36 Q37 47 49 36" stroke="#9a6e1e" stroke-width="1.6" stroke-linecap="round" fill="none" opacity="0.4"/>
+  <text x="52" y="28" font-family="Playfair Display, Georgia, serif" font-size="21" font-weight="900" fill="#1a1008" letter-spacing="-0.5">Grace</text>
+  <text x="119" y="28" font-family="Playfair Display, Georgia, serif" font-size="21" font-weight="900" fill="#9a6e1e" letter-spacing="-0.5" font-style="italic">Wave</text>
+</svg></div>
+    <div class="login-title">Admin Access</div>
+    <div class="login-sub">Sign in with your admin email & password</div>
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="email-input" placeholder="your@gmail.com" autocomplete="email"/>
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="password-input" placeholder="Enter your password"/>
+    </div>
+    <button class="login-btn" id="login-btn" onclick="doLogin()">
+      <span id="login-btn-text">Sign In →</span>
+      <div class="spinner" id="login-spinner"></div>
+    </button>
+    <div class="login-error" id="login-error">⚠ Incorrect email or password. Please try again.</div>
+    <div class="login-hint">🔒 Authorized administrators only.</div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-logo"><svg width="130" height="30" viewBox="0 0 190 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="190" height="44" rx="9" fill="#f8f4ec"/>
+  <rect x="15" y="4" width="4" height="26" rx="2" fill="#9a6e1e"/>
+  <rect x="7" y="12" width="22" height="4" rx="2" fill="#9a6e1e"/>
+  <path d="M5 36 Q12 29 19 36 Q26 43 33 36" stroke="#9a6e1e" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+  <path d="M1 36 Q13 25 25 36 Q37 47 49 36" stroke="#9a6e1e" stroke-width="1.6" stroke-linecap="round" fill="none" opacity="0.4"/>
+  <text x="52" y="28" font-family="Playfair Display, Georgia, serif" font-size="21" font-weight="900" fill="#1a1008" letter-spacing="-0.5">Grace</text>
+  <text x="119" y="28" font-family="Playfair Display, Georgia, serif" font-size="21" font-weight="900" fill="#9a6e1e" letter-spacing="-0.5" font-style="italic">Wave</text>
+</svg></div>
+        <span class="sidebar-badge">Admin Panel</span>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Overview</div>
+        <button class="sidebar-link active" onclick="showPanel('overview',this)">
+          <span class="nav-icon">📊</span> Dashboard
+        </button>
+        <div class="nav-section-label">Upload Content</div>
+        <button class="sidebar-link" onclick="showPanel('upload-audio',this)">
+          <span class="nav-icon">🎧</span> Audio Sermons
+          <span class="count-badge" id="cnt-audio">0</span>
+        </button>
+        <button class="sidebar-link" onclick="showPanel('upload-video',this)">
+          <span class="nav-icon">🎬</span> Video Sermons
+          <span class="count-badge" id="cnt-video">0</span>
+        </button>
+        <button class="sidebar-link" onclick="showPanel('upload-ebook',this)">
+          <span class="nav-icon">📗</span> eBooks & PDFs
+          <span class="count-badge" id="cnt-ebook">0</span>
+        </button>
+        <button class="sidebar-link" onclick="showPanel('upload-notes',this)">
+          <span class="nav-icon">📝</span> Bible Study Notes
+          <span class="count-badge" id="cnt-notes">0</span>
+        </button>
+        <div class="nav-section-label">Manage</div>
+        <button class="sidebar-link" onclick="showPanel('all-content',this)">
+          <span class="nav-icon">📁</span> All Uploads
+        </button>
+        <button class="hamburger" id="hamburger" aria-label="Open menu" onclick="toggleMobileNav()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-nav" id="mobile-nav">
+  <button class="mobile-nav-close" onclick="toggleMobileNav()">&#10005;</button>
+  <a href="index.html" onclick="toggleMobileNav()">Home</a>
+  <a href="index.html#sermons" onclick="toggleMobileNav()">Sermons</a>
+  <a href="index.html#books" onclick="toggleMobileNav()">Books</a>
+  <a href="index.html#bible-study" onclick="toggleMobileNav()">Bible Study</a>
+  <a href="ministers.html" onclick="toggleMobileNav()">Ministers</a>
+  <a href="about.html" onclick="toggleMobileNav()">About</a>
+  <a href="contact.html" onclick="toggleMobileNav()">Contact</a>
+</div>
+<script>
+function toggleMobileNav() {
+  var nav = document.getElementById('mobile-nav');
+  var btn = document.getElementById('hamburger');
+  if (nav) nav.classList.toggle('open');
+  if (btn) btn.classList.toggle('open');
+  document.body.style.overflow = (nav && nav.classList.contains('open')) ? 'hidden' : '';
+}
+</script>
+      <div class="sidebar-bottom">
+        <button class="logout-btn" onclick="doLogout()">⏻ Log Out</button>
+      </div>
+    </aside>
+
+    <div class="main-content">
+      <div class="topbar">
+        <div class="topbar-title" id="topbar-title">Dashboard</div>
+        <div class="topbar-right">
+          <span class="admin-email" id="admin-email-display"></span>
+          <span class="admin-pill">✦ Super Admin</span>
+        </div>
+      </div>
+
+      <div class="page-content">
+
+        <!-- OVERVIEW -->
+        <div class="panel active" id="panel-overview">
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-card-icon">🎧</div><div class="stat-card-num" id="stat-audio">0</div><div class="stat-card-label">Audio Sermons</div></div>
+            <div class="stat-card"><div class="stat-card-icon">🎬</div><div class="stat-card-num" id="stat-video">0</div><div class="stat-card-label">Video Sermons</div></div>
+            <div class="stat-card"><div class="stat-card-icon">📗</div><div class="stat-card-num" id="stat-ebook">0</div><div class="stat-card-label">eBooks & PDFs</div></div>
+            <div class="stat-card"><div class="stat-card-icon">📝</div><div class="stat-card-num" id="stat-notes">0</div><div class="stat-card-label">Bible Study Notes</div></div>
+          </div>
+          <div class="section-heading">Recent Uploads <span style="font-size:0.8rem;color:var(--text-muted);font-family:'DM Sans',sans-serif;font-weight:400;">Latest items added</span></div>
+          <div class="table-wrap">
+            <table><thead><tr><th>Title</th><th>Type</th><th>Speaker / Author</th><th>Date Added</th><th>Actions</th></tr></thead>
+            <tbody id="recent-tbody"><tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:32px;">Loading...</td></tr></tbody></table>
+          </div>
+        </div>
+
+        <!-- UPLOAD AUDIO -->
+        <div class="panel" id="panel-upload-audio">
+          <div class="upload-form-card">
+            <div class="section-heading" style="margin-bottom:28px;">Upload Audio Sermon</div>
+            <div class="form-grid">
+              <div class="form-field full"><label>Sermon Title *</label><input type="text" id="a-title" placeholder="e.g. The Unshakeable Kingdom"/></div>
+              <div class="form-field"><label>Speaker / Preacher *</label><input type="text" id="a-speaker" placeholder="e.g. Pastor Emmanuel Adeyemi"/></div>
+              <div class="form-field"><label>Topic / Category</label>
+                <select id="a-topic"><option value="">Select topic…</option><option>Faith</option><option>Grace</option><option>Prayer</option><option>Holy Spirit</option><option>Salvation</option><option>Healing</option><option>Marriage & Family</option><option>Prosperity</option><option>Prophecy</option><option>Evangelism</option><option>End Times</option><option>Other</option></select>
+              </div>
+              <div class="form-field"><label>Duration</label><input type="text" id="a-duration" placeholder="e.g. 1hr 12min"/></div>
+              <div class="form-field"><label>Scripture Reference</label><input type="text" id="a-scripture" placeholder="e.g. Hebrews 12:28"/></div>
+              <div class="form-field full"><label>Description</label><textarea id="a-desc" placeholder="Brief description of the message…"></textarea></div>
+              <div class="form-field full">
+                <label>Cover Image (Photo of Preacher or Sermon Artwork)</label>
+                <div class="cover-upload-row">
+                  <div class="cover-preview" id="cover-preview-audio">🎧</div>
+                  <div class="cover-dropzone">
+                    <input type="file" id="cover-audio" accept="image/*" onchange="handleCoverImage(this,'cover-preview-audio','cover-fn-audio')"/>
+                    <div style="font-size:1.4rem;margin-bottom:6px;">🖼</div>
+                    <div style="font-size:0.85rem;color:var(--text-soft);">Upload preacher photo or sermon cover</div>
+                    <div class="cover-hint">JPG, PNG, WEBP · Max 5MB</div>
+                    <div class="dz-filename" id="cover-fn-audio"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-field full">
+                <label>Audio File (MP3, WAV, M4A) *</label>
+                <div class="dropzone" id="dz-audio">
+                  <input type="file" id="file-audio" accept=".mp3,.wav,.m4a,audio/*" onchange="handleFile(this,'dz-audio','fn-audio','warn-audio')"/>
+                  <div class="dz-icon">🎧</div>
+                  <div class="dz-text">Drag & drop your audio file here</div>
+                  <div class="dz-sub">or <span>browse to choose</span> · MP3, WAV, M4A</div>
+                  <div class="dz-filename" id="fn-audio"></div>
+                </div>
+                <div class="file-warning" id="warn-audio">⚠ Large file detected. Upload may take a few minutes.</div>
+              </div>
+            </div>
+            <div class="progress-wrap" id="pw-audio">
+              <div class="progress-label"><span id="progress-status-audio">Uploading to Supabase…</span><span id="pct-audio">0%</span></div>
+              <div class="progress-bar-bg"><div class="progress-bar" id="pb-audio"></div></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn-primary" id="submit-audio" onclick="submitUpload('audio')">⬆ Publish Sermon</button>
+              <button class="btn-secondary" onclick="clearForm('audio')">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- UPLOAD VIDEO -->
+        <div class="panel" id="panel-upload-video">
+          <div class="upload-form-card">
+            <div class="section-heading" style="margin-bottom:28px;">Upload Video Sermon</div>
+            <div class="form-grid">
+              <div class="form-field full"><label>Sermon Title *</label><input type="text" id="v-title" placeholder="e.g. Walking in the Spirit"/></div>
+              <div class="form-field"><label>Speaker / Preacher *</label><input type="text" id="v-speaker" placeholder="e.g. Bro. Gabriel Okoro"/></div>
+              <div class="form-field"><label>Topic / Category</label>
+                <select id="v-topic"><option value="">Select topic…</option><option>Faith</option><option>Grace</option><option>Prayer</option><option>Holy Spirit</option><option>Salvation</option><option>Healing</option><option>Marriage & Family</option><option>Prosperity</option><option>Prophecy</option><option>Evangelism</option><option>End Times</option><option>Other</option></select>
+              </div>
+              <div class="form-field"><label>Duration</label><input type="text" id="v-duration" placeholder="e.g. 58min"/></div>
+              <div class="form-field"><label>Scripture Reference</label><input type="text" id="v-scripture" placeholder="e.g. Galatians 5:16"/></div>
+              <div class="form-field full"><label>Description</label><textarea id="v-desc" placeholder="Brief description…"></textarea></div>
+              <div class="form-field full">
+                <label>Cover Image (Photo of Preacher or Sermon Artwork)</label>
+                <div class="cover-upload-row">
+                  <div class="cover-preview" id="cover-preview-video">🎬</div>
+                  <div class="cover-dropzone">
+                    <input type="file" id="cover-video" accept="image/*" onchange="handleCoverImage(this,'cover-preview-video','cover-fn-video')"/>
+                    <div style="font-size:1.4rem;margin-bottom:6px;">🖼</div>
+                    <div style="font-size:0.85rem;color:var(--text-soft);">Upload preacher photo or sermon cover</div>
+                    <div class="cover-hint">JPG, PNG, WEBP · Max 5MB</div>
+                    <div class="dz-filename" id="cover-fn-video"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-field full">
+                <label>Video File (MP4, MOV)</label>
+                <div class="dropzone" id="dz-video">
+                  <input type="file" id="file-video" accept=".mp4,.mov,video/*" onchange="handleFile(this,'dz-video','fn-video','warn-video')"/>
+                  <div class="dz-icon">🎬</div>
+                  <div class="dz-text">Drag & drop video file here</div>
+                  <div class="dz-sub">or <span>browse to choose</span> · MP4, MOV</div>
+                  <div class="dz-filename" id="fn-video"></div>
+                </div>
+                <div class="file-warning" id="warn-video">⚠ Large file detected. Upload may take several minutes.</div>
+              </div>
+              <div class="form-field full"><label>Or Paste YouTube / Vimeo URL</label><input type="url" id="v-url" placeholder="https://youtube.com/watch?v=…"/></div>
+            </div>
+            <div class="progress-wrap" id="pw-video">
+              <div class="progress-label"><span id="progress-status-video">Uploading to Supabase…</span><span id="pct-video">0%</span></div>
+              <div class="progress-bar-bg"><div class="progress-bar" id="pb-video"></div></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn-primary" id="submit-video" onclick="submitUpload('video')">⬆ Publish Sermon</button>
+              <button class="btn-secondary" onclick="clearForm('video')">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- UPLOAD EBOOK -->
+        <div class="panel" id="panel-upload-ebook">
+          <div class="upload-form-card">
+            <div class="section-heading" style="margin-bottom:28px;">Upload eBook / PDF</div>
+            <div class="form-grid">
+              <div class="form-field full"><label>Book Title *</label><input type="text" id="e-title" placeholder="e.g. The Purpose Driven Life"/></div>
+              <div class="form-field"><label>Author *</label><input type="text" id="e-author" placeholder="e.g. Rick Warren"/></div>
+              <div class="form-field"><label>Category</label>
+                <select id="e-topic"><option value="">Select category…</option><option>Christian Living</option><option>Devotional</option><option>Theology</option><option>Prayer</option><option>Leadership</option><option>Marriage & Family</option><option>Evangelism</option><option>Biography</option><option>Children</option><option>Other</option></select>
+              </div>
+              <div class="form-field"><label>Number of Pages</label><input type="number" id="e-pages" placeholder="e.g. 320"/></div>
+              <div class="form-field full"><label>Description / Summary</label><textarea id="e-desc" placeholder="Brief description of the book…"></textarea></div>
+              <div class="form-field full">
+                <label>Book Cover Image</label>
+                <div class="cover-upload-row">
+                  <div class="cover-preview" id="cover-preview-ebook">📗</div>
+                  <div class="cover-dropzone">
+                    <input type="file" id="cover-ebook" accept="image/*" onchange="handleCoverImage(this,'cover-preview-ebook','cover-fn-ebook')"/>
+                    <div style="font-size:1.4rem;margin-bottom:6px;">🖼</div>
+                    <div style="font-size:0.85rem;color:var(--text-soft);">Upload the book cover image</div>
+                    <div class="cover-hint">JPG, PNG, WEBP · Max 5MB</div>
+                    <div class="dz-filename" id="cover-fn-ebook"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-field full">
+                <label>PDF File *</label>
+                <div class="dropzone" id="dz-ebook">
+                  <input type="file" id="file-ebook" accept=".pdf,application/pdf" onchange="handleFile(this,'dz-ebook','fn-ebook','warn-ebook')"/>
+                  <div class="dz-icon">📗</div>
+                  <div class="dz-text">Drag & drop PDF here</div>
+                  <div class="dz-sub">or <span>browse to choose</span> · PDF only</div>
+                  <div class="dz-filename" id="fn-ebook"></div>
+                </div>
+                <div class="file-warning" id="warn-ebook">⚠ Large file detected. Upload may take a moment.</div>
+              </div>
+            </div>
+            <div class="progress-wrap" id="pw-ebook">
+              <div class="progress-label"><span id="progress-status-ebook">Uploading to Supabase…</span><span id="pct-ebook">0%</span></div>
+              <div class="progress-bar-bg"><div class="progress-bar" id="pb-ebook"></div></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn-primary" id="submit-ebook" onclick="submitUpload('ebook')">⬆ Publish Book</button>
+              <button class="btn-secondary" onclick="clearForm('ebook')">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- UPLOAD NOTES -->
+        <div class="panel" id="panel-upload-notes">
+          <div class="upload-form-card">
+            <div class="section-heading" style="margin-bottom:28px;">Upload Bible Study Notes</div>
+            <div class="form-grid">
+              <div class="form-field full"><label>Study Title *</label><input type="text" id="n-title" placeholder="e.g. The Book of Romans — Deep Study"/></div>
+              <div class="form-field"><label>Prepared By *</label><input type="text" id="n-author" placeholder="e.g. Pastor Ngozi Kalu"/></div>
+              <div class="form-field"><label>Bible Book / Series</label><input type="text" id="n-book" placeholder="e.g. Romans, John, Psalms…"/></div>
+              <div class="form-field"><label>Level</label>
+                <select id="n-level"><option value="">Select level…</option><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select>
+              </div>
+              <div class="form-field full"><label>Description</label><textarea id="n-desc" placeholder="What will students learn?"></textarea></div>
+              <div class="form-field full">
+                <label>Cover Image (Optional)</label>
+                <div class="cover-upload-row">
+                  <div class="cover-preview" id="cover-preview-notes">📝</div>
+                  <div class="cover-dropzone">
+                    <input type="file" id="cover-notes" accept="image/*" onchange="handleCoverImage(this,'cover-preview-notes','cover-fn-notes')"/>
+                    <div style="font-size:1.4rem;margin-bottom:6px;">🖼</div>
+                    <div style="font-size:0.85rem;color:var(--text-soft);">Upload a cover or author photo</div>
+                    <div class="cover-hint">JPG, PNG, WEBP · Max 5MB</div>
+                    <div class="dz-filename" id="cover-fn-notes"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-field full">
+                <label>File (PDF, DOCX) *</label>
+                <div class="dropzone" id="dz-notes">
+                  <input type="file" id="file-notes" accept=".pdf,.doc,.docx" onchange="handleFile(this,'dz-notes','fn-notes','warn-notes')"/>
+                  <div class="dz-icon">📝</div>
+                  <div class="dz-text">Drag & drop study notes here</div>
+                  <div class="dz-sub">or <span>browse to choose</span> · PDF, DOCX</div>
+                  <div class="dz-filename" id="fn-notes"></div>
+                </div>
+                <div class="file-warning" id="warn-notes">⚠ Large file detected.</div>
+              </div>
+            </div>
+            <div class="progress-wrap" id="pw-notes">
+              <div class="progress-label"><span id="progress-status-notes">Uploading to Supabase…</span><span id="pct-notes">0%</span></div>
+              <div class="progress-bar-bg"><div class="progress-bar" id="pb-notes"></div></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn-primary" id="submit-notes" onclick="submitUpload('notes')">⬆ Publish Notes</button>
+              <button class="btn-secondary" onclick="clearForm('notes')">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ALL CONTENT -->
+        <div class="panel" id="panel-all-content">
+          <div class="type-tabs">
+            <button class="type-tab active" onclick="filterTable('all',this)">📁 All</button>
+            <button class="type-tab" onclick="filterTable('audio',this)">🎧 Audio</button>
+            <button class="type-tab" onclick="filterTable('video',this)">🎬 Video</button>
+            <button class="type-tab" onclick="filterTable('ebook',this)">📗 eBooks</button>
+            <button class="type-tab" onclick="filterTable('notes',this)">📝 Notes</button>
+          </div>
+          <div class="table-wrap">
+            <table><thead><tr><th>Title</th><th>Type</th><th>Speaker / Author</th><th>Date Added</th><th>Actions</th></tr></thead>
+            <tbody id="all-tbody"><tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:32px;">Loading…</td></tr></tbody></table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-icon" id="toast-icon">✓</div>
+  <div>
+    <div style="font-weight:600;margin-bottom:2px;" id="toast-title">Success!</div>
+    <div style="font-size:0.78rem;color:var(--text-muted);" id="toast-sub">Done.</div>
+  </div>
+</div>
+
+<script>
+  // ── SUPABASE INIT ──
+  const SUPABASE_URL = 'https://rrborziearsptkvugeot.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyYm9yemllYXJzcHRrdnVnZW90Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NjI2MDMsImV4cCI6MjA4ODIzODYwM30.vvig11R5xRttv-EyhADxpsGU8QOdNtkc1X6YBlFrXp4';
+  const { createClient } = supabase;
+  const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  let allUploads = [];
+
+  // ── AUTH: LOGIN ──
+  async function doLogin() {
+    const email = document.getElementById('email-input').value.trim();
+    const pass  = document.getElementById('password-input').value;
+    if (!email || !pass) { showError('Please enter your email and password.'); return; }
+
+    const btn = document.getElementById('login-btn');
+    const spinner = document.getElementById('login-spinner');
+    const btnText = document.getElementById('login-btn-text');
+    btn.disabled = true; spinner.style.display = 'block'; btnText.textContent = 'Signing in…';
+
+    const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+
+    btn.disabled = false; spinner.style.display = 'none'; btnText.textContent = 'Sign In →';
+
+    if (error) { showError('Incorrect email or password. Please try again.'); return; }
+
+    // Logged in!
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('admin-email-display').textContent = data.user.email;
+    loadAllContent();
+  }
+
+  function showError(msg) {
+    const err = document.getElementById('login-error');
+    err.textContent = '⚠ ' + msg;
+    err.style.display = 'block';
+    setTimeout(() => err.style.display = 'none', 4000);
+  }
+
+  // Allow Enter key
+  ['email-input','password-input'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+  });
+
+  // ── AUTH: CHECK SESSION ON LOAD ──
+  window.addEventListener('load', async () => {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      document.getElementById('admin-email-display').textContent = session.user.email;
+      loadAllContent();
+    }
+  });
+
+  // ── AUTH: LOGOUT ──
+  async function doLogout() {
+    await sb.auth.signOut();
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('email-input').value = '';
+    document.getElementById('password-input').value = '';
+  }
+
+  // ── NAVIGATION ──
+  function showPanel(name, btn) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    btn.classList.add('active');
+    const titles = { 'overview':'Dashboard','upload-audio':'Upload Audio Sermon','upload-video':'Upload Video Sermon','upload-ebook':'Upload eBook / PDF','upload-notes':'Upload Bible Study Notes','all-content':'All Uploads' };
+    document.getElementById('topbar-title').textContent = titles[name] || name;
+    if (name === 'all-content') renderAllTable(allUploads);
+  }
+
+  // ── FILE HANDLER ──
+  function handleFile(input, dzId, fnId, warnId) {
+    const file = input.files[0];
+    if (!file) return;
+    const fn = document.getElementById(fnId);
+    fn.textContent = '✓ ' + file.name + ' (' + formatSize(file.size) + ')';
+    fn.style.display = 'block';
+    const dz = document.getElementById(dzId);
+    dz.style.borderColor = 'var(--gold-border)';
+    dz.style.background = 'var(--gold-dim)';
+    // Warn if file > 50MB
+    const warn = document.getElementById(warnId);
+    warn.style.display = file.size > 50 * 1024 * 1024 ? 'block' : 'none';
+  }
+
+  function formatSize(bytes) {
+    if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+    return (bytes/(1024*1024)).toFixed(1) + ' MB';
+  }
+
+  document.querySelectorAll('.dropzone').forEach(dz => {
+    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+    dz.addEventListener('drop', () => dz.classList.remove('drag-over'));
+  });
+
+  // ── COVER IMAGE HANDLER ──
+  function handleCoverImage(input, previewId, fnId) {
+    const file = input.files[0];
+    if (!file) return;
+    const preview = document.getElementById(previewId);
+    const fn = document.getElementById(fnId);
+    fn.textContent = '✓ ' + file.name;
+    fn.style.display = 'block';
+    // Show live preview
+    const reader = new FileReader();
+    reader.onload = e => {
+      preview.innerHTML = `<img src="${e.target.result}" alt="cover"/>`;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ── TYPE CONFIG ──
+  const typeConfig = {
+    audio: { titleId:'a-title', speakerId:'a-speaker', topicId:'a-topic', durationId:'a-duration', scriptureId:'a-scripture', descId:'a-desc', fileId:'file-audio', pw:'pw-audio', pb:'pb-audio', pct:'pct-audio', status:'progress-status-audio', submitId:'submit-audio', cnt:'cnt-audio', stat:'stat-audio', label:'Audio', icon:'🎧', pill:'pill-audio', bucket:'sermons', folder:'audio' },
+    video: { titleId:'v-title', speakerId:'v-speaker', topicId:'v-topic', durationId:'v-duration', scriptureId:'v-scripture', descId:'v-desc', fileId:'file-video', urlId:'v-url', pw:'pw-video', pb:'pb-video', pct:'pct-video', status:'progress-status-video', submitId:'submit-video', cnt:'cnt-video', stat:'stat-video', label:'Video', icon:'🎬', pill:'pill-video', bucket:'sermons', folder:'video' },
+    ebook: { titleId:'e-title', speakerId:'e-author', topicId:'e-topic', pagesId:'e-pages', descId:'e-desc', fileId:'file-ebook', pw:'pw-ebook', pb:'pb-ebook', pct:'pct-ebook', status:'progress-status-ebook', submitId:'submit-ebook', cnt:'cnt-ebook', stat:'stat-ebook', label:'eBook', icon:'📗', pill:'pill-ebook', bucket:'books', folder:'ebooks' },
+    notes: { titleId:'n-title', speakerId:'n-author', bookId:'n-book', levelId:'n-level', descId:'n-desc', fileId:'file-notes', pw:'pw-notes', pb:'pb-notes', pct:'pct-notes', status:'progress-status-notes', submitId:'submit-notes', cnt:'cnt-notes', stat:'stat-notes', label:'Notes', icon:'📝', pill:'pill-notes', bucket:'books', folder:'notes' },
+  };
+
+  // ── SUBMIT UPLOAD ──
+  async function submitUpload(type) {
+    const cfg = typeConfig[type];
+    const title   = document.getElementById(cfg.titleId).value.trim();
+    const speaker = document.getElementById(cfg.speakerId).value.trim();
+    const fileInput = document.getElementById(cfg.fileId);
+    const file = fileInput.files[0];
+
+    if (!title || !speaker) { showToast('Missing Fields', 'Please fill in Title and Speaker/Author.', true); return; }
+
+    // For video, allow URL instead of file
+    const videoUrl = type === 'video' ? (document.getElementById('v-url')?.value.trim() || '') : '';
+    if (!file && !videoUrl) { showToast('No File', 'Please choose a file to upload.', true); return; }
+
+    const submitBtn = document.getElementById(cfg.submitId);
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Uploading…';
+
+    const pw = document.getElementById(cfg.pw);
+    const pb = document.getElementById(cfg.pb);
+    const pct = document.getElementById(cfg.pct);
+    const statusEl = document.getElementById(cfg.status);
+    pw.style.display = 'block';
+
+    let fileUrl = videoUrl;
+    let coverImageUrl = '';
+
+    // Upload COVER IMAGE first if provided
+    const coverInput = document.getElementById('cover-' + type);
+    const coverFile = coverInput ? coverInput.files[0] : null;
+    if (coverFile) {
+      statusEl.textContent = 'Uploading cover image…';
+      const coverName = `covers/${type}/${Date.now()}_${coverFile.name.replace(/\s+/g,'_')}`;
+      const { data: coverData, error: coverError } = await sb.storage
+        .from('sermons')
+        .upload(coverName, coverFile, { cacheControl: '3600', upsert: false });
+      if (!coverError) {
+        const { data: coverUrlData } = sb.storage.from('sermons').getPublicUrl(coverName);
+        coverImageUrl = coverUrlData.publicUrl;
+      }
+    }
+
+    // Upload file to Supabase Storage
+    if (file) {
+      statusEl.textContent = 'Uploading file to storage…';
+      // Fake progress animation while uploading
+      let fakeProgress = 0;
+      const fakeInterval = setInterval(() => {
+        fakeProgress = Math.min(fakeProgress + Math.random() * 8, 85);
+        pb.style.width = fakeProgress + '%';
+        pct.textContent = Math.floor(fakeProgress) + '%';
+      }, 300);
+
+      const ext = file.name.split('.').pop();
+      const fileName = `${cfg.folder}/${Date.now()}_${file.name.replace(/\s+/g,'_')}`;
+      const { data: storageData, error: storageError } = await sb.storage
+        .from(cfg.bucket)
+        .upload(fileName, file, { cacheControl: '3600', upsert: false });
+
+      clearInterval(fakeInterval);
+
+      if (storageError) {
+        pb.style.width = '0%'; pw.style.display = 'none';
+        submitBtn.disabled = false; submitBtn.textContent = '⬆ Publish';
+        showToast('Upload Failed', storageError.message, true);
+        return;
+      }
+
+      pb.style.width = '90%'; pct.textContent = '90%';
+
+      // Get public URL
+      const { data: urlData } = sb.storage.from(cfg.bucket).getPublicUrl(fileName);
+      fileUrl = urlData.publicUrl;
+    }
+
+    // Save metadata to database
+    statusEl.textContent = 'Saving to database…';
+    pb.style.width = '95%'; pct.textContent = '95%';
+
+    const meta = {
+      title,
+      speaker_author: speaker,
+      type,
+      topic: document.getElementById(cfg.topicId)?.value || '',
+      description: document.getElementById(cfg.descId)?.value.trim() || '',
+      file_url: fileUrl,
+      duration: document.getElementById(cfg.durationId)?.value || '',
+      scripture: document.getElementById(cfg.scriptureId)?.value || '',
+      pages: document.getElementById(cfg.pagesId) ? parseInt(document.getElementById(cfg.pagesId).value) || null : null,
+      bible_book: document.getElementById(cfg.bookId)?.value || '',
+      level: document.getElementById(cfg.levelId)?.value || '',
+      cover_image_url: coverImageUrl,
+      created_at: new Date().toISOString(),
+    };
+
+    const { data: dbData, error: dbError } = await sb.from('content').insert([meta]).select();
+
+    pb.style.width = '100%'; pct.textContent = '100%';
+
+    setTimeout(() => {
+      pw.style.display = 'none'; pb.style.width = '0%'; pct.textContent = '0%';
+      submitBtn.disabled = false; submitBtn.innerHTML = '⬆ Publish';
+    }, 600);
+
+    if (dbError) {
+      showToast('DB Error', dbError.message, true);
+      return;
+    }
+
+    // Add to local list
+    allUploads.unshift({ ...meta, id: dbData[0].id, icon: cfg.icon, label: cfg.label, pill: cfg.pill });
+    updateStats();
+    renderRecentTable();
+    clearForm(type);
+    showToast('Published! 🎉', `"${title}" is now live on GraceWave.`);
+  }
+
+  // ── LOAD ALL CONTENT FROM DB ──
+  async function loadAllContent() {
+    const { data, error } = await sb.from('content').select('*').order('created_at', { ascending: false });
+    if (error) { console.error(error); return; }
+
+    allUploads = data.map(row => ({
+      ...row,
+      icon: typeConfig[row.type]?.icon || '📄',
+      label: typeConfig[row.type]?.label || row.type,
+      pill: typeConfig[row.type]?.pill || '',
+    }));
+    updateStats();
+    renderRecentTable();
+    renderAllTable(allUploads);
+  }
+
+  // ── STATS ──
+  function updateStats() {
+    ['audio','video','ebook','notes'].forEach(t => {
+      const count = allUploads.filter(u => u.type === t).length;
+      document.getElementById('stat-' + t).textContent = count;
+      document.getElementById('cnt-' + t).textContent = count;
+    });
+  }
+
+  function renderRecentTable() { renderTable('recent-tbody', allUploads.slice(0, 10)); }
+  function renderAllTable(data) { renderTable('all-tbody', data); }
+
+  function renderTable(tbodyId, data) {
+    const tbody = document.getElementById(tbodyId);
+    if (!data || !data.length) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:32px;">No uploads yet.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.map(u => `
+      <tr data-type="${u.type}">
+        <td class="td-title" title="${u.title}">${u.icon} ${u.title}</td>
+        <td><span class="type-pill ${u.pill}">${u.label}</span></td>
+        <td>${u.speaker_author}</td>
+        <td>${new Date(u.created_at).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}</td>
+        <td>
+          <div class="action-btns">
+            ${u.file_url ? `<a href="${u.file_url}" target="_blank"><button class="tbl-btn">👁 View</button></a>` : ''}
+            <button class="tbl-btn del" onclick="deleteItem('${u.id}','${u.title.replace(/'/g,"\\'")}')">🗑 Delete</button>
+          </div>
+        </td>
+      </tr>`).join('');
+  }
+
+  // ── DELETE ──
+  async function deleteItem(id, title) {
+    if (!confirm(`Delete "${title}"? This cannot be undone.`)) return;
+    const { error } = await sb.from('content').delete().eq('id', id);
+    if (error) { showToast('Error', error.message, true); return; }
+    allUploads = allUploads.filter(u => u.id !== id);
+    updateStats();
+    renderRecentTable();
+    renderAllTable(allUploads);
+    showToast('Deleted', `"${title}" removed.`);
+  }
+
+  // ── FILTER TABLE ──
+  function filterTable(type, btn) {
+    document.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    renderAllTable(type === 'all' ? allUploads : allUploads.filter(u => u.type === type));
+  }
+
+  // ── CLEAR FORM ──
+  function clearForm(type) {
+    const ids = {
+      audio: ['a-title','a-speaker','a-duration','a-scripture','a-desc'],
+      video: ['v-title','v-speaker','v-duration','v-scripture','v-desc','v-url'],
+      ebook: ['e-title','e-author','e-pages','e-desc'],
+      notes: ['n-title','n-author','n-book','n-desc'],
+    };
+    ids[type].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    const fi = document.getElementById('file-' + type);
+    if (fi) fi.value = '';
+    const fn = document.getElementById('fn-' + type);
+    if (fn) { fn.style.display = 'none'; fn.textContent = ''; }
+    // Clear cover image
+    const ci = document.getElementById('cover-' + type);
+    if (ci) ci.value = '';
+    const icons = { audio:'🎧', video:'🎬', ebook:'📗', notes:'📝' };
+    const cp = document.getElementById('cover-preview-' + type);
+    if (cp) cp.innerHTML = icons[type] || '🖼';
+    const cfn = document.getElementById('cover-fn-' + type);
+    if (cfn) { cfn.style.display = 'none'; cfn.textContent = ''; }
+  }
+
+  // ── TOAST ──
+  function showToast(title, sub, isError = false) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toast-title').textContent = title;
+    document.getElementById('toast-sub').textContent = sub;
+    document.getElementById('toast-icon').textContent = isError ? '⚠' : '✓';
+    toast.style.borderColor = isError ? 'rgba(229,62,62,0.4)' : 'rgba(72,187,120,0.4)';
+    toast.style.background = isError ? 'rgba(229,62,62,0.08)' : 'var(--surface)';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4000);
+  }
+</script><script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/sw.js');
+    });
+  }
+</script>
+</body>
+</html>

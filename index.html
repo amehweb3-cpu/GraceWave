@@ -14,6 +14,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <!-- PWA -->
+  <!-- Preconnect to Supabase for faster first fetch -->
+  <link rel="preconnect" href="https://rrborziearsptkvugeot.supabase.co" />
+  <link rel="dns-prefetch" href="https://rrborziearsptkvugeot.supabase.co" />
   <link rel="manifest" href="/manifest.json" />
   <meta name="theme-color" content="#9a6e1e" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -22,7 +25,6 @@
   <link rel="apple-touch-icon" href="/icons/icon-192.png" />
   <title>GraceWave — Sermons & Books</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -288,14 +290,14 @@
   
     /* ── SWIPER / CAROUSEL ── */
     .swiper-wrap { position:relative; overflow:hidden; }
-    .swiper-track { display:flex; gap:20px; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:4px; cursor:grab; }
+    .swiper-track { display:flex !important; overflow-x:auto !important; -webkit-overflow-scrolling:touch; scroll-snap-type:x mandatory; scrollbar-width:none; gap:16px; padding-bottom:4px; cursor:grab; }
     .swiper-track::-webkit-scrollbar { display:none; }
     .swiper-track:active { cursor:grabbing; }
     .swiper-track .minister-card,
     .swiper-track .book-card { scroll-snap-align:start; flex-shrink:0; }
 
     /* Desktop: show 4 ministers, 5 books */
-    .ministers-swiper .minister-card { width:calc(25% - 15px); }
+    .ministers-swiper .minister-card { min-width:calc(25% - 15px); width:calc(25% - 15px); }
     .books-swiper .book-card { width:calc(20% - 16px); }
 
     /* Swiper dots */
@@ -310,16 +312,16 @@
     .swiper-arrow:disabled { opacity:0.3; cursor:default; }
 
     @media (max-width:1100px) {
-      .ministers-swiper .minister-card { width:calc(50% - 10px); }
+      .ministers-swiper .minister-card { min-width:calc(50% - 10px); width:calc(50% - 10px); }
       .books-swiper .book-card { width:calc(33.333% - 14px); }
     }
     @media (max-width:768px) {
-      .ministers-swiper .minister-card { width:calc(50% - 8px); }
+      .ministers-swiper .minister-card { min-width:calc(50% - 8px); width:calc(50% - 8px); }
       .books-swiper .book-card { width:calc(50% - 7px); }
       .swiper-arrows { display:none; }
     }
     @media (max-width:480px) {
-      .ministers-swiper .minister-card { width:calc(75% - 8px); }
+      .ministers-swiper .minister-card { min-width:calc(75% - 8px); width:calc(75% - 8px); }
       .books-swiper .book-card { width:calc(60% - 7px); }
     }
   
@@ -351,6 +353,44 @@
       .page-hero { padding-top: 80px !important; }
     }
 
+  
+    /* ── MUSIC SECTION ── */
+    .music-swiper .swiper-track { gap: 16px; }
+    .music-card {
+      min-width: calc(25% - 12px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: all 0.3s;
+      flex-shrink: 0;
+    }
+    .music-card:hover { transform: translateY(-4px); border-color: rgba(201,168,76,0.3); }
+    .music-cover {
+      width: 100%; aspect-ratio: 1/1;
+      background: linear-gradient(135deg,#1a0a2e,#3d1f6e);
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .music-cover img { width:100%; height:100%; object-fit:cover; position:absolute; inset:0; }
+    .music-play-btn {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(201,168,76,0.9); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; position: relative; z-index: 2;
+      transition: transform 0.2s;
+    }
+    .music-play-btn:hover { transform: scale(1.1); }
+    .music-info { padding: 12px 14px; }
+    .music-title { font-weight: 600; font-size: 0.88rem; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .music-artist { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px; }
+    .music-dl { width: 100%; background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.3); color: var(--gold); border-radius: 8px; padding: 7px; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; }
+    .music-dl:hover { background: var(--gold); color: #0a0a0f; }
+    @media (max-width: 900px) { .music-card { min-width: calc(50% - 8px); } }
+    @media (max-width: 480px) { .music-card { min-width: calc(75% - 8px); } }
   </style>
 </head>
 <body>
@@ -367,6 +407,7 @@
 </svg></a>
   <ul class="nav-links">
     <li><a href="#sermons">Sermons</a></li>
+    <li><a href="#music">Music</a></li>
     <li><a href="#books">Books</a></li>
     <li><a href="#bible-study">Bible Study</a></li>
     <li><a href="ministers.html">Ministers</a></li>
@@ -561,6 +602,27 @@ function toggleMobileNav() {
   </div>
 </section>
 
+<!-- MUSIC -->
+<section id="music" class="reveal">
+  <div class="section-header">
+    <div><div class="section-label">Worship & Praise</div><h2 class="section-title">Gospel <em>Music</em></h2></div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="swiper-arrows">
+        <button class="swiper-arrow" id="music-prev" onclick="slideTrack('music-grid',-1)">&#8592;</button>
+        <button class="swiper-arrow" id="music-next" onclick="slideTrack('music-grid',1)">&#8594;</button>
+      </div>
+    </div>
+  </div>
+  <div class="swiper-wrap music-swiper">
+    <div class="swiper-track" id="music-grid">
+      <div class="skeleton music-card" style="height:200px;border-radius:16px;min-width:200px;"></div>
+      <div class="skeleton music-card" style="height:200px;border-radius:16px;min-width:200px;"></div>
+      <div class="skeleton music-card" style="height:200px;border-radius:16px;min-width:200px;"></div>
+      <div class="skeleton music-card" style="height:200px;border-radius:16px;min-width:200px;"></div>
+    </div>
+  </div>
+  <div class="swiper-dots" id="music-dots"></div>
+</section>
 <!-- NEWSLETTER -->
 <div class="newsletter reveal">
   <div class="section-label" style="justify-content:center;margin-bottom:16px">Stay Connected</div>
@@ -611,10 +673,58 @@ function toggleMobileNav() {
 </footer>
 
 <script>
+  // Direct REST — no heavy library, loads instantly on mobile
   const SUPABASE_URL = 'https://rrborziearsptkvugeot.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyYm9yemllYXJzcHRrdnVnZW90Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NjI2MDMsImV4cCI6MjA4ODIzODYwM30.vvig11R5xRttv-EyhADxpsGU8QOdNtkc1X6YBlFrXp4';
-  const { createClient } = supabase;
-  const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // Lightweight Supabase REST wrapper (replaces 300KB supabase-js)
+  const sb = {
+    from: function(table) {
+      return {
+        select: function(cols) {
+          return {
+            order: function(col, opts) {
+              var asc = opts && opts.ascending === true ? 'asc' : 'desc';
+              var url = SUPABASE_URL + '/rest/v1/' + table
+                + '?select=' + encodeURIComponent(cols)
+                + '&order=' + col + '.' + asc;
+              return fetch(url, {
+                headers: {
+                  'apikey': SUPABASE_KEY,
+                  'Authorization': 'Bearer ' + SUPABASE_KEY,
+                  'Content-Type': 'application/json'
+                }
+              })
+              .then(function(r) { return r.json(); })
+              .then(function(data) {
+                if (Array.isArray(data)) return { data: data, error: null };
+                return { data: null, error: data };
+              })
+              .catch(function(err) { return { data: null, error: err }; });
+            }
+          };
+        }
+      };
+    }
+  };
+
+  // ── EARLY FETCH — fires immediately, before DOM finishes ──
+  var _earlyFetch = fetch(
+    SUPABASE_URL + '/rest/v1/content?select=*&order=created_at.desc',
+    {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Accept': 'application/json'
+      }
+    }
+  ).then(function(r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).catch(function(err) {
+    console.error('[GW] Early fetch failed:', err);
+    return null;
+  });
 
   const bgGradients = [
     'radial-gradient(ellipse at 30% 40%,rgba(124,92,191,0.5) 0%,rgba(10,10,15,0.9) 70%)',
@@ -743,6 +853,38 @@ function toggleMobileNav() {
         buttons[i].setAttribute('data-title', item.title);
       }
     });
+  }
+
+  // ── RENDER MUSIC ──
+  function renderMusic(items) {
+    var grid = document.getElementById('music-grid');
+    if (!grid) return;
+    if (!items || !items.length) {
+      grid.innerHTML = '<div style="color:var(--text-muted);padding:40px;text-align:center;font-size:0.9rem;">No music uploaded yet. Check back soon!</div>';
+      return;
+    }
+    var musicGradients = [
+      'linear-gradient(135deg,#1a0a2e,#6b21a8)',
+      'linear-gradient(135deg,#0f172a,#1e3a8a)',
+      'linear-gradient(135deg,#1a0a0a,#7f1d1d)',
+      'linear-gradient(135deg,#0a1a0f,#14532d)',
+      'linear-gradient(135deg,#1a1200,#713f12)',
+    ];
+    grid.innerHTML = items.map(function(item, i) {
+      var cover = item.cover_image_url
+        ? '<img src="' + item.cover_image_url + '" alt="' + item.title + '"/>'
+        : '';
+      return '<div class="music-card">'
+        + '<div class="music-cover" style="background:' + musicGradients[i % musicGradients.length] + '">'
+        + cover
+        + '<button class="music-play-btn">&#9658;</button>'
+        + '</div>'
+        + '<div class="music-info">'
+        + '<div class="music-title">' + item.title + '</div>'
+        + '<div class="music-artist">🎤 ' + item.speaker_author + '</div>'
+        + (item.file_url ? '<button class="music-dl dl-btn" onclick="triggerDownload(this)" data-url="' + item.file_url + '" data-title="' + item.title.replace(/"/g,"'") + '">&#11015; Download Free</button>' : '<span class="music-dl" style="opacity:0.4">No file</span>')
+        + '</div></div>';
+    }).join('');
   }
 
   function renderEmpty() {
@@ -889,44 +1031,67 @@ function toggleMobileNav() {
 
   // ── MINISTERS PREVIEW ──
 
-  // ── SINGLE FAST LOAD — one DB call, with cache ──
+  // ── SINGLE FAST LOAD — bulletproof version ──
   async function initAll() {
+
+    // Step 1: Show cache instantly if available
+    const CACHE_KEY = 'gw_v1';
+    let cached = null;
     try {
-      // Show cached data instantly if available
-      const CACHE_KEY = 'gw_content_v1';
-      const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
-      let cached = null;
-      try {
-        const raw = localStorage.getItem(CACHE_KEY);
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          if (Date.now() - parsed.ts < CACHE_TTL) cached = parsed.data;
+      const raw = localStorage.getItem(CACHE_KEY);
+      if (raw) {
+        const p = JSON.parse(raw);
+        // Cache valid for 10 mins
+        if (Date.now() - p.ts < 600000 && Array.isArray(p.d) && p.d.length > 0) {
+          cached = p.d;
+          processData(cached);
+          debugToast('⚡ Loaded from cache (' + cached.length + ' items)');
         }
-      } catch(e) {}
-
-      if (cached) {
-        // Render instantly from cache
-        processData(cached);
       }
+    } catch(e) {}
 
-      // Always fetch fresh in background
-      const { data, error } = await sb
-        .from('content')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error || !data) { if (!cached) renderEmpty(); return; }
-
-      // Save to cache
-      try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch(e) {}
-
-      // Only re-render if data changed
-      if (!cached || JSON.stringify(data) !== JSON.stringify(cached)) processData(data);
-
-    } catch(err) {
-      console.error('GraceWave load error:', err);
-      renderEmpty();
+    // Step 2: Wait for the early fetch (already in flight)
+    let data = null;
+    try {
+      const result = await _earlyFetch;
+      if (Array.isArray(result) && result.length > 0) {
+        data = result;
+      } else if (result === null) {
+        debugToast('❌ Fetch returned null — check network/Supabase');
+      } else {
+        debugToast('⚠ Unexpected response: ' + JSON.stringify(result).substring(0, 80));
+      }
+    } catch(e) {
+      debugToast('❌ Fetch error: ' + e.message);
     }
+
+    if (!data) {
+      if (!cached) {
+        renderEmpty();
+        debugToast('❌ No data and no cache — sermons empty');
+      }
+      return;
+    }
+
+    // Step 3: Save fresh data to cache
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), d: data }));
+    } catch(e) {}
+
+    // Step 4: Render (skip if same as cached)
+    if (!cached) {
+      processData(data);
+      debugToast('✅ Loaded ' + data.length + ' items from Supabase');
+    } else if (data.length !== cached.length) {
+      processData(data);
+      debugToast('🔄 Updated: ' + data.length + ' items');
+    }
+  }
+
+  // Debug toast — shows on screen for 6 seconds (remove after testing)
+  function debugToast(msg) {
+    console.log('[GW]', msg);
+
   }
 
   function processData(data) {
@@ -934,7 +1099,7 @@ function toggleMobileNav() {
     allData = data;
 
     // Counts
-    const counts = { audio:0, video:0, ebook:0, notes:0 };
+    const counts = { audio:0, video:0, ebook:0, notes:0, music:0 };
     data.forEach(r => { if (counts[r.type] !== undefined) counts[r.type]++; });
     const safeSet = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
     safeSet('count-audio', counts.audio + ' available');
@@ -948,8 +1113,11 @@ function toggleMobileNav() {
 
     // Render sections
     renderSermons(data.filter(r => r.type === 'audio' || r.type === 'video'));
+    renderMusic(data.filter(r => r.type === 'music'));
     renderBooks(data.filter(r => r.type === 'ebook'));
     renderNotes(data.filter(r => r.type === 'notes'));
+    // Update music swiper dots
+    setTimeout(function() { updateDots('music-grid','music-dots','music-prev','music-next'); }, 300);
 
     // Ministers preview from same data
     var map = {};
@@ -1048,6 +1216,14 @@ function toggleMobileNav() {
     var next = document.getElementById(nextId);
     if (prev) prev.disabled = track.scrollLeft <= 0;
     if (next) next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 5;
+  }
+
+  function slideTrack(trackId, dir) {
+    var track = document.getElementById(trackId);
+    if (!track) return;
+    var card = track.children[0];
+    var cardW = card ? card.offsetWidth + 16 : 220;
+    track.scrollBy({ left: dir * cardW * 2, behavior: 'smooth' });
   }
 
   function slideMinister(dir) {

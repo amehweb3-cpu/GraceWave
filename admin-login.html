@@ -118,6 +118,7 @@
     .pill-video { background: rgba(124,92,191,0.15); color: #b794f4; }
     .pill-ebook { background: rgba(72,187,120,0.12); color: #68d391; }
     .pill-notes { background: rgba(237,137,54,0.12); color: #f6ad55; }
+    .pill-music { background: rgba(236,72,153,0.12); color: #f472b6; }
     .action-btns { display: flex; gap: 8px; }
     .tbl-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text-muted); padding: 5px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
     .tbl-btn:hover { border-color: var(--gold-border); color: var(--gold); }
@@ -376,6 +377,10 @@
           <span class="nav-icon">📊</span> Dashboard
         </button>
         <div class="nav-section-label">Upload Content</div>
+        <button class="sidebar-link" onclick="showPanel('upload-music',this)">
+          <span>🎵</span> Gospel Music
+          <span class="count-badge" id="cnt-music">0</span>
+        </button>
         <button class="sidebar-link" onclick="showPanel('upload-audio',this)">
           <span class="nav-icon">🎧</span> Audio Sermons
           <span class="count-badge" id="cnt-audio">0</span>
@@ -438,6 +443,7 @@ function toggleMobileNav() {
         <!-- OVERVIEW -->
         <div class="panel active" id="panel-overview">
           <div class="stats-grid">
+            <div class="stat-card"><div class="stat-card-icon">🎵</div><div class="stat-card-num" id="stat-music">0</div><div class="stat-card-label">Gospel Music</div></div>
             <div class="stat-card"><div class="stat-card-icon">🎧</div><div class="stat-card-num" id="stat-audio">0</div><div class="stat-card-label">Audio Sermons</div></div>
             <div class="stat-card"><div class="stat-card-icon">🎬</div><div class="stat-card-num" id="stat-video">0</div><div class="stat-card-label">Video Sermons</div></div>
             <div class="stat-card"><div class="stat-card-icon">📗</div><div class="stat-card-num" id="stat-ebook">0</div><div class="stat-card-label">eBooks & PDFs</div></div>
@@ -451,6 +457,43 @@ function toggleMobileNav() {
         </div>
 
         <!-- UPLOAD AUDIO -->
+        <div class="panel" id="panel-upload-music">
+          <div class="panel-title">🎵 Upload Gospel Music</div>
+          <div class="upload-grid">
+            <div class="upload-col">
+              <div class="form-field"><label>Song Title *</label><input type="text" id="m-title" placeholder="e.g. Amazing Grace"/></div>
+              <div class="form-field"><label>Artist / Minister *</label><input type="text" id="m-author" placeholder="e.g. Nathaniel Bassey"/></div>
+              <div class="form-field"><label>Album / Topic</label><input type="text" id="m-topic" placeholder="e.g. Worship Album 2024"/></div>
+              <div class="form-field"><label>Description</label><textarea id="m-desc" rows="3" placeholder="Short description..."></textarea></div>
+            </div>
+            <div class="upload-col">
+              <div class="form-field">
+                <label>Cover Art</label>
+                <div class="cover-drop">
+                  <div class="cover-preview" id="cover-preview-music">🎵</div>
+                  <label class="cover-btn">Choose Image<input type="file" id="cover-music" accept="image/*" onchange="handleCoverImage(this,'cover-preview-music','cover-fn-music')"/></label>
+                  <div class="dz-filename" id="cover-fn-music"></div>
+                </div>
+              </div>
+              <div class="form-field">
+                <label>Music File * (.mp3, .wav, .m4a)</label>
+                <div class="dropzone" id="dz-music">
+                  <input type="file" id="file-music" accept=".mp3,.wav,.m4a,audio/*" onchange="handleFile(this,'dz-music','fn-music','warn-music')"/>
+                  <div class="dz-icon">🎵</div>
+                  <div class="dz-text">Drag & drop your music file here</div>
+                </div>
+                <div class="dz-filename" id="fn-music"></div>
+                <div class="upload-warn" id="warn-music"></div>
+              </div>
+              <div class="progress-wrap" id="pw-music" style="display:none">
+                <div class="progress-bar"><div class="progress-fill" id="pb-music"></div></div>
+                <div class="progress-status" id="progress-status-music">Uploading…</div>
+              </div>
+              <button class="submit-btn" id="submit-music" onclick="handleUpload('music')">🎵 Upload Music</button>
+              <div class="upload-stat" id="stat-music-form"><span id="cnt-music-form">0</span> songs uploaded</div>
+            </div>
+          </div>
+        </div>
         <div class="panel" id="panel-upload-audio">
           <div class="upload-form-card">
             <div class="section-heading" style="margin-bottom:28px;">Upload Audio Sermon</div>
@@ -796,6 +839,7 @@ function toggleMobileNav() {
   const typeConfig = {
     audio: { titleId:'a-title', speakerId:'a-speaker', topicId:'a-topic', durationId:'a-duration', scriptureId:'a-scripture', descId:'a-desc', fileId:'file-audio', pw:'pw-audio', pb:'pb-audio', pct:'pct-audio', status:'progress-status-audio', submitId:'submit-audio', cnt:'cnt-audio', stat:'stat-audio', label:'Audio', icon:'🎧', pill:'pill-audio', bucket:'sermons', folder:'audio' },
     video: { titleId:'v-title', speakerId:'v-speaker', topicId:'v-topic', durationId:'v-duration', scriptureId:'v-scripture', descId:'v-desc', fileId:'file-video', urlId:'v-url', pw:'pw-video', pb:'pb-video', pct:'pct-video', status:'progress-status-video', submitId:'submit-video', cnt:'cnt-video', stat:'stat-video', label:'Video', icon:'🎬', pill:'pill-video', bucket:'sermons', folder:'video' },
+    music: { titleId:'m-title', speakerId:'m-author', topicId:'m-topic', descId:'m-desc', fileId:'file-music', pw:'pw-music', pb:'pb-music', pct:'pct-music', status:'progress-status-music', submitId:'submit-music', cnt:'cnt-music', stat:'stat-music', label:'Music', icon:'🎵', pill:'pill-music', bucket:'audio', folder:'music' },
     ebook: { titleId:'e-title', speakerId:'e-author', topicId:'e-topic', pagesId:'e-pages', descId:'e-desc', fileId:'file-ebook', pw:'pw-ebook', pb:'pb-ebook', pct:'pct-ebook', status:'progress-status-ebook', submitId:'submit-ebook', cnt:'cnt-ebook', stat:'stat-ebook', label:'eBook', icon:'📗', pill:'pill-ebook', bucket:'books', folder:'ebooks' },
     notes: { titleId:'n-title', speakerId:'n-author', bookId:'n-book', levelId:'n-level', descId:'n-desc', fileId:'file-notes', pw:'pw-notes', pb:'pb-notes', pct:'pct-notes', status:'progress-status-notes', submitId:'submit-notes', cnt:'cnt-notes', stat:'stat-notes', label:'Notes', icon:'📝', pill:'pill-notes', bucket:'books', folder:'notes' },
   };
@@ -990,6 +1034,7 @@ function toggleMobileNav() {
     const ids = {
       audio: ['a-title','a-speaker','a-duration','a-scripture','a-desc'],
       video: ['v-title','v-speaker','v-duration','v-scripture','v-desc','v-url'],
+      music: ['m-title','m-author'],
       ebook: ['e-title','e-author','e-pages','e-desc'],
       notes: ['n-title','n-author','n-book','n-desc'],
     };

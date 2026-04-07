@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- PWA -->
+<link rel="manifest" href="/manifest.json"/>
+<meta name="theme-color" content="#9a6e1e"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="GraceWave"/>
+<link rel="apple-touch-icon" href="/icons/icon-180.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16.png"/>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R0ZQ4B6TVP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R0ZQ4B6TVP');
+</script>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Terms of Use — GraceWave | The Repairers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f; --surface: #111118; --surface2: #18181f;
+      --border: rgba(255,255,255,0.07); --gold: #c9a84c; --gold-light: #e8c96e;
+      --gold-dim: rgba(201,168,76,0.12); --gold-border: rgba(201,168,76,0.3);
+      --text: #f0ede6; --text-muted: #8a8699; --text-soft: #c5c0d4;
+      --accent: #7c5cbf; --radius: 12px;
+    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 18px 60px; background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--gold), var(--accent)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .logo-text { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--text); }
+    .logo-text span { color: var(--gold); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--gold); }
+
+    .page-hero { padding: 160px 60px 80px; text-align: center; position: relative; overflow: hidden; }
+    .page-hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(124,92,191,0.15) 0%, transparent 60%); }
+    .page-hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--gold-dim); border: 1px solid var(--gold-border); color: var(--gold-light); padding: 7px 18px; border-radius: 100px; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 24px; }
+    .page-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 4rem); font-weight: 900; line-height: 1.1; position: relative; }
+    .page-hero h1 em { font-style: italic; color: var(--gold); }
+    .page-hero .updated { color: var(--text-muted); font-size: 0.83rem; margin-top: 16px; position: relative; }
+
+    .doc-layout { max-width: 1100px; margin: 0 auto; padding: 60px 60px 100px; display: grid; grid-template-columns: 220px 1fr; gap: 60px; align-items: start; }
+    .toc { position: sticky; top: 100px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+    .toc-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
+    .toc ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .toc a { color: var(--text-muted); text-decoration: none; font-size: 0.82rem; padding: 6px 10px; border-radius: 6px; display: block; transition: all 0.2s; }
+    .toc a:hover { color: var(--gold); background: var(--gold-dim); }
+
+    .doc-content h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; margin: 48px 0 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+    .doc-content h2:first-child { margin-top: 0; border-top: none; }
+    .doc-content h2 em { font-style: italic; color: var(--gold); }
+    .doc-content p { color: var(--text-soft); margin-bottom: 16px; font-size: 0.95rem; }
+    .doc-content ul { color: var(--text-soft); font-size: 0.95rem; padding-left: 20px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .doc-content ul li::marker { color: var(--gold); }
+    .doc-content strong { color: var(--text); font-weight: 600; }
+    .doc-content a { color: var(--gold); text-decoration: none; }
+    .doc-content a:hover { text-decoration: underline; }
+    .highlight-box { background: var(--surface); border: 1px solid var(--gold-border); border-left: 3px solid var(--gold); border-radius: 8px; padding: 18px 20px; margin: 20px 0; }
+    .highlight-box p { margin: 0; color: var(--text-soft); font-size: 0.9rem; }
+
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 50px 60px 30px; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.83rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-copy { font-size: 0.8rem; color: var(--text-muted); }
+
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; } .nav-links { display: none; }
+      .page-hero { padding: 70px 24px 60px; }
+      .doc-layout { grid-template-columns: 1fr; padding: 40px 24px 70px; }
+      .toc { display: none; }
+      footer { padding: 40px 24px 24px; }
+    }
+  
+    /* ── HAMBURGER MENU ── */
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; background:none; border:none; z-index:200; }
+    .hamburger span { display:block; width:24px; height:2px; background:var(--text); border-radius:2px; transition:all 0.3s ease; }
+    .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity:0; }
+    .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+
+    /* Mobile nav drawer */
+    .mobile-nav { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(10,10,15,0.98); backdrop-filter:blur(20px); z-index:150; flex-direction:column; align-items:center; justify-content:center; gap:10px; }
+    .mobile-nav.open { display:flex; }
+    .mobile-nav a { color:var(--text); text-decoration:none; font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:700; padding:14px 0; transition:color 0.2s; }
+    .mobile-nav a:hover { color:var(--gold); }
+    .mobile-nav-close { position:absolute; top:24px; right:24px; background:none; border:none; color:var(--text); font-size:1.6rem; cursor:pointer; }
+
+    /* ── GLOBAL MOBILE FIXES ── */
+    @media (max-width: 768px) {
+      /* Nav */
+      
+      .nav-links { display:none !important; }
+
+      /* Hero */
+      .hero { padding:60px 20px 60px; min-height:auto; }
+      h1.hero-title { font-size:clamp(2.2rem,9vw,3.2rem); }
+      .hero-sub { font-size:0.95rem; }
+      .hero-actions { flex-direction:column; align-items:center; gap:12px; }
+      .hero-actions a, .hero-actions button { width:100%; max-width:320px; justify-content:center; }
+      .hero-stats { gap:24px; margin-top:48px; }
+      .divider { display:none; }
+      .stat-num { font-size:1.5rem; }
+
+      /* Sections */
+      section { padding:60px 20px; }
+      .section-header { flex-direction:column; align-items:flex-start; gap:12px; }
+      h2.section-title { font-size:clamp(1.6rem,6vw,2.2rem); max-width:100%; }
+
+      /* Types grid */
+      .types-grid { grid-template-columns:repeat(2,1fr); gap:12px; }
+      .type-card { padding:24px 16px; }
+      .type-icon { width:48px; height:48px; font-size:20px; }
+
+      /* Search */
+      .search-section { padding:50px 20px; }
+      .search-box-wrap { flex-wrap:nowrap; }
+
+      /* Sermons grid */
+      .sermons-grid { grid-template-columns:1fr; gap:16px; }
+
+      /* Books */
+      .books-row { grid-template-columns:repeat(2,1fr); gap:14px; }
+
+      /* Ministers preview */
+      #ministers-preview { grid-template-columns:repeat(2,1fr) !important; gap:14px; }
+      .ministers-grid { grid-template-columns:repeat(2,1fr); gap:14px; }
+
+      /* Newsletter */
+      .newsletter { padding:44px 20px; margin:0 16px 60px; border-radius:14px; }
+      .newsletter h2 { font-size:1.6rem; }
+      .email-row { flex-direction:column; gap:10px; }
+      .email-input { min-width:unset; width:100%; }
+
+      /* Footer */
+      footer { padding:50px 20px 30px; }
+      .footer-top { grid-template-columns:1fr; gap:28px; }
+      .footer-bottom { flex-direction:column; align-items:flex-start; gap:16px; }
+
+      /* Page heroes (inner pages) */
+      .page-hero { padding:110px 20px 60px; }
+      .page-hero h1 { font-size:clamp(2rem,8vw,3rem); }
+
+      /* Doc layout (privacy/terms) */
+      .doc-layout { grid-template-columns:1fr; padding:30px 20px 60px; gap:30px; }
+      .toc { display:none; }
+
+      /* Contact / About */
+      .contact-grid, .about-grid, .values-grid { grid-template-columns:1fr !important; }
+      .contact-info { padding:30px 20px !important; }
+
+      /* Minister cards grid */
+      .minister-card { padding:24px 14px; }
+      .minister-photo { width:80px; height:80px; }
+    }
+
+    @media (max-width: 480px) {
+      h1.hero-title { font-size:2rem; }
+      .books-row { grid-template-columns:repeat(2,1fr); }
+      .types-grid { grid-template-columns:repeat(2,1fr); }
+      .ministers-grid { grid-template-columns:1fr; }
+      #ministers-preview { grid-template-columns:1fr !important; }
+      .sermon-title-featured { font-size:1.1rem; }
+      nav { padding:14px 16px; }
+      .nav-logo svg { width:130px; height:30px; }
+    }
+
+    @media screen and (max-width: 768px) {
+      
+    }
+
+  
+    @media (max-width: 768px) {
+      nav { display: none !important; }
+      .page-hero { padding-top: 50px !important; }
+      .container { padding-top: 20px !important; }
+      .doc-layout { padding-top: 20px !important; }
+    }
+  
+    /* ── MOBILE NAV — app style ── */
+    @media (max-width: 768px) {
+      /* Top bar: hamburger left, logo center */
+      nav {
+        padding: 12px 16px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        position: fixed !important;
+        top: 0 !important; left: 0 !important; right: 0 !important;
+        z-index: 200 !important;
+        background: rgba(10,10,15,0.97) !important;
+        backdrop-filter: blur(20px) !important;
+        border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+        height: 60px !important;
+      }
+      /* Show hamburger */
+      .hamburger { display:flex !important; order: 0; }
+      /* Logo centered */
+      .nav-logo { position: absolute; left: 50%; transform: translateX(-50%); }
+      /* Hide desktop links */
+      .nav-links { display: none !important; }
+      /* Push content below fixed nav */
+      body { padding-top: 60px !important; }
+      .hero { padding-top: 50px !important; }
+      .page-hero { padding-top: 80px !important; }
+    }
+
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html"><svg width="158" height="36" viewBox="0 0 190 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="190" height="44" rx="9" fill="#f8f4ec"/>
+  <rect x="15" y="4" width="4" height="26" rx="2" fill="#9a6e1e"/>
+  <rect x="7" y="12" width="22" height="4" rx="2" fill="#9a6e1e"/>
+  <path d="M5 36 Q12 29 19 36 Q26 43 33 36" stroke="#9a6e1e" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+  <path d="M1 36 Q13 25 25 36 Q37 47 49 36" stroke="#9a6e1e" stroke-width="1.6" stroke-linecap="round" fill="none" opacity="0.4"/>
+  <text x="52" y="28" font-family="Playfair Display, Georgia, serif" font-size="21" font-weight="900" fill="#1a1008" letter-spacing="-0.5">Grace</text>
+  <text x="119" y="28" font-family="Playfair Display, Georgia, serif" font-size="21" font-weight="900" fill="#9a6e1e" letter-spacing="-0.5" font-style="italic">Wave</text>
+</svg></a>
+  <ul class="nav-links">
+    <li><a href="index.html#sermons">Sermons</a></li>
+    <li><a href="index.html#books">Books</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Open menu" onclick="toggleMobileNav()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-nav" id="mobile-nav">
+  <button class="mobile-nav-close" onclick="toggleMobileNav()">&#10005;</button>
+  <a href="index.html" onclick="toggleMobileNav()">Home</a>
+  <a href="index.html#sermons" onclick="toggleMobileNav()">Sermons</a>
+  <a href="index.html#books" onclick="toggleMobileNav()">Books</a>
+  <a href="index.html#bible-study" onclick="toggleMobileNav()">Bible Study</a>
+  <a href="ministers.html" onclick="toggleMobileNav()">Ministers</a>
+  <a href="about.html" onclick="toggleMobileNav()">About</a>
+  <a href="contact.html" onclick="toggleMobileNav()">Contact</a>
+</div>
+<script>
+function toggleMobileNav() {
+  var nav = document.getElementById('mobile-nav');
+  var btn = document.getElementById('hamburger');
+  if (nav) nav.classList.toggle('open');
+  if (btn) btn.classList.toggle('open');
+  document.body.style.overflow = (nav && nav.classList.contains('open')) ? 'hidden' : '';
+}
+</script>
+
+<div class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-badge">📋 Legal</div>
+  <h1>Terms of <em>Use</em></h1>
+  <div class="updated">Last updated: March 2026</div>
+</div>
+
+<div class="doc-layout">
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <ul>
+      <li><a href="#acceptance">Acceptance</a></li>
+      <li><a href="#platform">About the Platform</a></li>
+      <li><a href="#content">Content Use</a></li>
+      <li><a href="#prohibited">Prohibited Use</a></li>
+      <li><a href="#copyright">Copyright</a></li>
+      <li><a href="#disclaimer">Disclaimer</a></li>
+      <li><a href="#liability">Liability</a></li>
+      <li><a href="#changes">Changes</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+
+  <div class="doc-content">
+    <div class="highlight-box">
+      <p>✝ <strong>In the spirit of the Gospel:</strong> GraceWave exists to freely share the Word of God. These terms exist to protect the integrity of that mission and the rights of the ministers and authors whose content we host.</p>
+    </div>
+
+    <h2 id="acceptance"><em>Acceptance</em> of Terms</h2>
+    <p>By accessing and using GraceWave (the "Platform"), the digital ministry platform of The Repairers, you agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use the platform.</p>
+    <p>These terms apply to all visitors, users, and anyone who downloads content from GraceWave.</p>
+
+    <h2 id="platform">About the <em>Platform</em></h2>
+    <p>GraceWave is a free Christian resource platform operated by The Repairers Ministry, based in Nigeria. Our mission is to make anointed sermons, Christian books, and Bible study materials freely available to believers everywhere.</p>
+    <p>All content on this platform is provided <strong>free of charge</strong> for personal, non-commercial use in furtherance of the Gospel of Jesus Christ.</p>
+
+    <h2 id="content">Content <em>Use</em></h2>
+    <p>You are permitted to:</p>
+    <ul>
+      <li>Download sermons, books, and study notes for your personal spiritual growth</li>
+      <li>Share content with friends, family, and fellow believers for non-commercial purposes</li>
+      <li>Use content in personal Bible study, home fellowships, and small group settings</li>
+      <li>Print and distribute materials in church or ministry settings free of charge</li>
+    </ul>
+    <p>All content must be used in a manner consistent with Christian values and the purpose for which it was created — to glorify God and edify His people.</p>
+
+    <h2 id="prohibited"><em>Prohibited</em> Use</h2>
+    <p>You may <strong>not</strong>:</p>
+    <ul>
+      <li>Sell, resell, or commercially distribute any content downloaded from GraceWave</li>
+      <li>Modify, edit, or alter any sermon or book content and present it as your own</li>
+      <li>Use the platform or its content to promote false teaching, heresy, or content contrary to the Christian faith</li>
+      <li>Attempt to gain unauthorised access to any part of the platform, including the admin system</li>
+      <li>Use automated tools or bots to scrape or bulk-download content from the platform</li>
+      <li>Use the platform in any way that could damage, disable, or impair its operation</li>
+    </ul>
+
+    <h2 id="copyright"><em>Copyright</em> & Ownership</h2>
+    <p>All sermons, books, and materials on GraceWave remain the intellectual property of their respective speakers, authors, and publishers. The Repairers Ministry does not claim ownership of third-party content uploaded to the platform.</p>
+    <p>The GraceWave platform design, branding, and original materials produced by The Repairers Ministry are protected under applicable copyright law.</p>
+    <p>If you believe any content on this platform infringes your copyright, please contact us at <a href="/cdn-cgi/l/email-protection#70111d1518131c151d1d110418191103424230171d11191c5e131f1d"><span class="__cf_email__" data-cfemail="0c6d6169646f606961616d7864656d7f3e3e4c6b616d6560226f6361">[email&#160;protected]</span></a> and we will review and act promptly.</p>
+
+    <h2 id="disclaimer"><em>Disclaimer</em></h2>
+    <p>The content on GraceWave is provided for spiritual and educational purposes. While we endeavour to upload doctrinally sound and biblically grounded material, The Repairers Ministry does not endorse every theological position expressed in every sermon or book hosted on the platform.</p>
+    <p>Listeners and readers are encouraged to test all things against the Word of God (1 Thessalonians 5:21) and exercise discernment in their consumption of Christian content.</p>
+
+    <h2 id="liability">Limitation of <em>Liability</em></h2>
+    <p>GraceWave and The Repairers Ministry shall not be liable for any direct, indirect, incidental, or consequential damages arising from your use of the platform or reliance on any content downloaded from it.</p>
+    <p>The platform is provided "as is" without warranties of any kind. We do not guarantee uninterrupted access, and we reserve the right to modify or remove content at any time.</p>
+
+    <h2 id="changes"><em>Changes</em> to These Terms</h2>
+    <p>We may update these Terms of Use from time to time. Any changes will be reflected by updating the "Last updated" date at the top of this page. Continued use of the platform after changes are made constitutes your acceptance of the revised terms.</p>
+
+    <h2 id="contact"><em>Contact</em> Us</h2>
+    <p>If you have any questions about these Terms of Use, please contact us:</p>
+    <ul>
+      <li><strong>Email:</strong> <a href="/cdn-cgi/l/email-protection#7e1f131b161d121b13131f0a16171f0d4c4c3e19131f1712501d1113"><span class="__cf_email__" data-cfemail="02636f676a616e676f6f63766a6b6371303042656f636b6e2c616d6f">[email&#160;protected]</span></a></li>
+      <li><strong>WhatsApp:</strong> +234 913 260 1485</li>
+      <li><strong>Ministry:</strong> The Repairers</li>
+    </ul>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">© 2026 GraceWave — The Repairers Ministry.</span>
+    <div class="footer-links">
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Use</a>
+    </div>
+  </div>
+</footer><script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/sw.js');
+    });
+  }
+</script>
+</body>
+</html>

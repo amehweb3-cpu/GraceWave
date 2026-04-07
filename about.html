@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- PWA -->
+<link rel="manifest" href="/manifest.json"/>
+<meta name="theme-color" content="#9a6e1e"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="GraceWave"/>
+<link rel="apple-touch-icon" href="/icons/icon-180.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16.png"/>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R0ZQ4B6TVP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R0ZQ4B6TVP');
+</script>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us — GraceWave | The Repairers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f; --surface: #111118; --surface2: #18181f;
+      --border: rgba(255,255,255,0.07); --gold: #c9a84c; --gold-light: #e8c96e;
+      --gold-dim: rgba(201,168,76,0.12); --gold-border: rgba(201,168,76,0.3);
+      --text: #f0ede6; --text-muted: #8a8699; --text-soft: #c5c0d4;
+      --accent: #7c5cbf; --radius: 12px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 18px 60px; background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--gold), var(--accent)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .logo-text { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--text); }
+    .logo-text span { color: var(--gold); }
+    .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+    /* HERO */
+    .page-hero { padding: 160px 60px 100px; text-align: center; position: relative; overflow: hidden; }
+    .page-hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,92,191,0.2) 0%, transparent 60%); }
+    .page-hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--gold-dim); border: 1px solid var(--gold-border); color: var(--gold-light); padding: 7px 18px; border-radius: 100px; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 24px; }
+    .page-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 900; line-height: 1.1; letter-spacing: -0.02em; position: relative; }
+    .page-hero h1 em { font-style: italic; color: var(--gold); }
+    .page-hero p { max-width: 600px; margin: 24px auto 0; color: var(--text-soft); font-size: 1.05rem; font-weight: 300; position: relative; }
+
+    /* CONTENT */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 60px; }
+
+    /* MISSION SECTION */
+    .mission { padding: 80px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .mission-text .label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+    .mission-text .label::before { content: ''; display: block; width: 24px; height: 1px; background: var(--gold); }
+    .mission-text h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 700; line-height: 1.2; margin-bottom: 24px; }
+    .mission-text h2 em { font-style: italic; color: var(--gold); }
+    .mission-text p { color: var(--text-soft); margin-bottom: 16px; font-size: 0.95rem; }
+    .mission-visual { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 50px 40px; text-align: center; position: relative; overflow: hidden; }
+    .mission-visual::before { content: '✝'; position: absolute; font-size: 200px; color: rgba(201,168,76,0.04); top: -40px; left: 50%; transform: translateX(-50%); pointer-events: none; }
+    .mission-cross { font-size: 4rem; margin-bottom: 20px; }
+    .mission-verse { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-style: italic; color: var(--text-soft); line-height: 1.6; margin-bottom: 12px; }
+    .mission-verse-ref { font-size: 0.82rem; color: var(--gold); font-weight: 600; }
+
+    /* VALUES */
+    .values { padding: 80px 0; }
+    .values-header { text-align: center; margin-bottom: 60px; }
+    .values-header .label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .values-header .label::before, .values-header .label::after { content: ''; display: block; width: 24px; height: 1px; background: var(--gold); }
+    .values-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 700; }
+    .values-header h2 em { font-style: italic; color: var(--gold); }
+    .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .value-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 36px 28px; transition: all 0.3s; }
+    .value-card:hover { border-color: var(--gold-border); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+    .value-icon { font-size: 2rem; margin-bottom: 18px; }
+    .value-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 12px; }
+    .value-desc { color: var(--text-muted); font-size: 0.88rem; line-height: 1.7; }
+
+    /* STORY */
+    .story { padding: 80px 0; border-top: 1px solid var(--border); }
+    .story-inner { max-width: 720px; margin: 0 auto; text-align: center; }
+    .story-inner .label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .story-inner .label::before, .story-inner .label::after { content: ''; display: block; width: 24px; height: 1px; background: var(--gold); }
+    .story-inner h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 700; margin-bottom: 32px; }
+    .story-inner h2 em { font-style: italic; color: var(--gold); }
+    .story-inner p { color: var(--text-soft); font-size: 0.97rem; margin-bottom: 18px; }
+
+    /* CTA */
+    .about-cta { background: linear-gradient(135deg, var(--surface2) 0%, rgba(124,92,191,0.1) 100%); border: 1px solid var(--border); border-radius: 20px; padding: 70px; text-align: center; margin: 0 0 100px; position: relative; overflow: hidden; }
+    .about-cta::before { content: '✦'; position: absolute; font-size: 300px; color: rgba(201,168,76,0.03); top: -80px; left: 50%; transform: translateX(-50%); pointer-events: none; }
+    .about-cta h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; margin-bottom: 16px; position: relative; }
+    .about-cta p { color: var(--text-muted); max-width: 460px; margin: 0 auto 36px; position: relative; }
+    .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; }
+    .btn-primary { background: var(--gold); color: #0a0a0f; padding: 14px 32px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; text-decoration: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(201,168,76,0.3); }
+    .btn-outline { background: transparent; color: var(--text); padding: 14px 32px; border-radius: 8px; font-weight: 500; font-size: 0.95rem; text-decoration: none; border: 1px solid var(--border); transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-outline:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); }
+
+    /* FOOTER */
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 50px 60px 30px; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.83rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-copy { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    .page-hero-badge, .page-hero h1, .page-hero p { animation: fadeUp 0.7s ease both; }
+    .page-hero h1 { animation-delay: 0.1s; }
+    .page-hero p { animation-delay: 0.2s; }
+
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; } .nav-links { display: none; }
+      .page-hero { padding: 120px 24px 70px; }
+      .container { padding: 0 24px; }
+      .mission { grid-template-columns: 1fr; gap: 40px; }
+      .values-grid { grid-template-columns: 1fr; }
+      .about-cta { padding: 50px 30px; }
+      footer { padding: 40px 24px 24px; }
+    }
+  
+    /* ── HAMBURGER MENU ── */
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; background:none; border:none; z-index:200; }
+    .hamburger span { display:block; width:24px; height:2px; background:var(--text); border-radius:2px; transition:all 0.3s ease; }
+    .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity:0; }
+    .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+
+    /* Mobile nav drawer */
+    .mobile-nav { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(10,10,15,0.98); backdrop-filter:blur(20px); z-index:150; flex-direction:column; align-items:center; justify-content:center; gap:10px; }
+    .mobile-nav.open { display:flex; }
+    .mobile-nav a { color:var(--text); text-decoration:none; font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:700; padding:14px 0; transition:color 0.2s; }
+    .mobile-nav a:hover { color:var(--gold); }
+    .mobile-nav-close { position:absolute; top:24px; right:24px; background:none; border:none; color:var(--text); font-size:1.6rem; cursor:pointer; }
+
+    /* ── GLOBAL MOBILE FIXES ── */
+    @media (max-width: 768px) {
+      /* Nav */
+      
+      .nav-links { display:none !important; }
+
+      /* Hero */
+      .hero { padding:60px 20px 60px; min-height:auto; }
+      h1.hero-title { font-size:clamp(2.2rem,9vw,3.2rem); }
+      .hero-sub { font-size:0.95rem; }
+      .hero-actions { flex-direction:column; align-items:center; gap:12px; }
+      .hero-actions a, .hero-actions button { width:100%; max-width:320px; justify-content:center; }
+      .hero-stats { gap:24px; margin-top:48px; }
+      .divider { display:none; }
+      .stat-num { font-size:1.5rem; }
+
+      /* Sections */
+      section { padding:60px 20px; }
+      .section-header { flex-direction:column; align-items:flex-start; gap:12px; }
+      h2.section-title { font-size:clamp(1.6rem,6vw,2.2rem); max-width:100%; }
+
+      /* Types grid */
+      .types-grid { grid-template-columns:repeat(2,1fr); gap:12px; }
+      .type-card { padding:24px 16px; }
+      .type-icon { width:48px; height:48px; font-size:20px; }
+
+      /* Search */
+      .search-section { padding:50px 20px; }
+      .search-box-wrap { flex-wrap:nowrap; }
+
+      /* Sermons grid */
+      .sermons-grid { grid-template-columns:1fr; gap:16px; }
+
+      /* Books */
+      .books-row { grid-template-columns:repeat(2,1fr); gap:14px; }
+
+      /* Ministers preview */
+      #ministers-preview { grid-template-columns:repeat(2,1fr) !important; gap:14px; }
+      .ministers-grid { grid-template-columns:repeat(2,1fr); gap:14px; }
+
+      /* Newsletter */
+      .newsletter { padding:44px 20px; margin:0 16px 60px; border-radius:14px; }
+      .newsletter h2 { font-size:1.6rem; }
+      .email-row { flex-direction:column; gap:10px; }
+      .email-input { min-width:unset; width:100%; }
+
+      /* Footer */
+      footer { padding:50px 20px 30px; }
+      .footer-top { grid-template-columns:1fr; gap:28px; }
+      .footer-bottom { flex-direction:column; align-items:flex-start; gap:16px; }
+
+      /* Page heroes (inner pages) */
+      .page-hero { padding:110px 20px 60px; }
+      .page-hero h1 { font-size:clamp(2rem,8vw,3rem); }
+
+      /* Doc layout (privacy/terms) */
+      .doc-layout { grid-template-columns:1fr; padding:30px 20px 60px; gap:30px; }
+      .toc { display:none; }
+
+      /* Contact / About */
+      .contact-grid, .about-grid, .values-grid { grid-template-columns:1fr !important; }
+      .contact-info { padding:30px 20px !important; }
+
+      /* Minister cards grid */
+      .minister-card { padding:24px 14px; }
+      .minister-photo { width:80px; height:80px; }
+    }
+
+    @media (max-width: 480px) {
+      h1.hero-title { font-size:2rem; }
+      .books-row { grid-template-columns:repeat(2,1fr); }
+      .types-grid { grid-template-columns:repeat(2,1fr); }
+      .ministers-grid { grid-template-columns:1fr; }
+      #ministers-preview { grid-template-columns:1fr !important; }
+      .sermon-title-featured { font-size:1.1rem; }
+      nav { padding:14px 16px; }
+      .nav-logo svg { width:130px; height:30px; }
+    }
+
+    @media screen and (max-width: 768px) {
+      
+    }
+
+  
+    @media (max-width: 768px) {
+      nav { display: none !important; }
+      .page-hero { padding-top: 50px !important; }
+      .container { padding-top: 20px !important; }
+      .doc-layout { padding-top: 20px !important; }
+    }
+  
+    /* ── MOBILE NAV — app style ── */
+    @media (max-width: 768px) {
+      /* Top bar: hamburger left, logo center */
+      nav {
+        padding: 12px 16px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        position: fixed !important;
+        top: 0 !important; left: 0 !important; right: 0 !important;
+        z-index: 200 !important;
+        background: rgba(10,10,15,0.97) !important;
+        backdrop-filter: blur(20px) !important;
+        border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+        height: 60px !important;
+      }
+      /* Show hamburger */
+      .hamburger { display:flex !important; order: 0; }
+      /* Logo centered */
+      .nav-logo { position: absolute; left: 50%; transform: translateX(-50%); }
+      /* Hide desktop links */
+      .nav-links { display: none !important; }
+      /* Push content below fixed nav */
+      body { padding-top: 60px !important; }
+      .hero { padding-top: 50px !important; }
+      .page-hero { padding-top: 80px !important; }
+    }
+
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html"><svg width="158" height="36" viewBox="0 0 190 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="190" height="44" rx="9" fill="#f8f4ec"/>
+  <rect x="15" y="4" width="4" height="26" rx="2" fill="#9a6e1e"/>
+  <rect x="7" y="12" width="22" height="4" rx="2" fill="#9a6e1e"/>
+  <path d="M5 36 Q12 29 19 36 Q26 43 33 36" stroke="#9a6e1e" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+  <path d="M1 36 Q13 25 25 36 Q37 47 49 36" stroke="#9a6e1e" stroke-width="1.6" stroke-linecap="round" fill="none" opacity="0.4"/>
+  <text x="52" y="28" font-family="Playfair Display, Georgia, serif" font-size="21" font-weight="900" fill="#1a1008" letter-spacing="-0.5">Grace</text>
+  <text x="119" y="28" font-family="Playfair Display, Georgia, serif" font-size="21" font-weight="900" fill="#9a6e1e" letter-spacing="-0.5" font-style="italic">Wave</text>
+</svg></a>
+  <ul class="nav-links">
+    <li><a href="index.html#sermons">Sermons</a></li>
+    <li><a href="index.html#books">Books</a></li>
+    <li><a href="index.html#bible-study">Bible Study</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Open menu" onclick="toggleMobileNav()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-nav" id="mobile-nav">
+  <button class="mobile-nav-close" onclick="toggleMobileNav()">&#10005;</button>
+  <a href="index.html" onclick="toggleMobileNav()">Home</a>
+  <a href="index.html#sermons" onclick="toggleMobileNav()">Sermons</a>
+  <a href="index.html#books" onclick="toggleMobileNav()">Books</a>
+  <a href="index.html#bible-study" onclick="toggleMobileNav()">Bible Study</a>
+  <a href="ministers.html" onclick="toggleMobileNav()">Ministers</a>
+  <a href="about.html" onclick="toggleMobileNav()">About</a>
+  <a href="contact.html" onclick="toggleMobileNav()">Contact</a>
+</div>
+<script>
+function toggleMobileNav() {
+  var nav = document.getElementById('mobile-nav');
+  var btn = document.getElementById('hamburger');
+  if (nav) nav.classList.toggle('open');
+  if (btn) btn.classList.toggle('open');
+  document.body.style.overflow = (nav && nav.classList.contains('open')) ? 'hidden' : '';
+}
+</script>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-badge">✦ Our Story</div>
+  <h1>About <em>The Repairers</em></h1>
+  <p>A ministry devoted to restoring lives, rebuilding faith, and spreading the Word of God freely across Nigeria and beyond.</p>
+</div>
+
+<div class="container">
+
+  <!-- MISSION -->
+  <div class="mission reveal">
+    <div class="mission-text">
+      <div class="label">Our Mission</div>
+      <h2>Rebuilding Lives Through the <em>Power of God's Word</em></h2>
+      <p>The Repairers is a Christian ministry built on the conviction that the Gospel is the greatest force for restoration in the world. We believe that every broken life, every wounded spirit, and every searching soul can be made whole through an encounter with Jesus Christ.</p>
+      <p>Through GraceWave, our digital platform, we make anointed sermons, life-changing books, and in-depth Bible study materials freely available to every person — regardless of where they are or what they can afford.</p>
+      <p>Our name comes from Isaiah 58:12 — a call to be those who repair the broken places, restore the ancient foundations, and raise up a generation that walks in the fullness of God's purpose.</p>
+    </div>
+    <div class="mission-visual">
+      <div class="mission-cross">✝</div>
+      <div class="mission-verse">"And they that shall be of thee shall build the old waste places: thou shalt raise up the foundations of many generations; and thou shalt be called, The repairer of the breach..."</div>
+      <div class="mission-verse-ref">— Isaiah 58:12 (KJV)</div>
+    </div>
+  </div>
+
+  <!-- VALUES -->
+  <div class="values reveal">
+    <div class="values-header">
+      <div class="label">What We Stand For</div>
+      <h2>Our Core <em>Values</em></h2>
+    </div>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">📖</div>
+        <div class="value-title">Word-Centred</div>
+        <div class="value-desc">Everything we do is rooted in the Bible. We believe the Word of God is living, active, and sufficient for every need of the human soul.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🙏</div>
+        <div class="value-title">Prayer & Faith</div>
+        <div class="value-desc">We are a praying ministry. We believe that prayer is the engine of every move of God, and we are committed to a lifestyle of faith and intercession.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🌍</div>
+        <div class="value-title">Free For All</div>
+        <div class="value-desc">The Gospel is free. Every sermon, book, and study note on GraceWave is available at no cost — because the grace of God cannot be bought or sold.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">❤️</div>
+        <div class="value-title">Love & Compassion</div>
+        <div class="value-desc">We serve people with the love of Christ — meeting them where they are, walking with them in their journey, and pointing them always to the Saviour.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🔥</div>
+        <div class="value-title">Holy Spirit Led</div>
+        <div class="value-desc">We do not lean on human wisdom alone. Every message, every resource, every decision is submitted to the leading of the Holy Spirit.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🏗️</div>
+        <div class="value-title">Building People</div>
+        <div class="value-desc">Our goal is not just converts but disciples — men and women who are grounded in the Word, filled with the Spirit, and sent to impact their world.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STORY -->
+  <div class="story reveal">
+    <div class="story-inner">
+      <div class="label">Our Journey</div>
+      <h2>How <em>GraceWave</em> Was Born</h2>
+      <p>The Repairers began with a simple but powerful burden — to make the Word of God accessible to as many people as possible in Nigeria and beyond. We saw how many believers hungered for quality Christian content but couldn't always access it.</p>
+      <p>GraceWave was created as the digital arm of that vision. A place where anyone, anywhere, at any time, can download a sermon that will strengthen their faith, a book that will transform their thinking, or a Bible study that will deepen their walk with God.</p>
+      <p>We are not a large organisation. We are a community of believers who love God, love His Word, and love His people — and we are committed to serving the body of Christ with every resource God entrusts to us.</p>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="about-cta reveal">
+    <h2>Join Us in Spreading the Word</h2>
+    <p>Browse our library of free sermons, books, and Bible study notes — and share them with someone who needs it today.</p>
+    <div class="cta-btns">
+      <a href="index.html#sermons" class="btn-primary">▶ Browse Sermons</a>
+      <a href="contact.html" class="btn-outline">✉ Contact Us</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">© 2026 GraceWave — The Repairers Ministry. All rights reserved.</span>
+    <div class="footer-links">
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Use</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, {threshold: 0.1});
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script><script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/sw.js');
+    });
+  }
+</script>
+</body>
+</html>
